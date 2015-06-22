@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="00bfc7b28a5c4b18bc652f516d26ba14" Name="Diagram1">
+        <EntityTypeShape EntityType="BYXModel.AttendanceRecord" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BYXModel.BYXEvent" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BYXModel.EventType" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BYXModel.Member" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BYXModel.MemberType" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <AssociationConnector Association="BYXModel.FK_AttendanceRecords_BYXEvents" ManuallyRouted="false" />
+        <AssociationConnector Association="BYXModel.FK_AttendanceRecords_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="BYXModel.FK_BYXEvents_EventTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="BYXModel.FK_Members_MemberTypes" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
