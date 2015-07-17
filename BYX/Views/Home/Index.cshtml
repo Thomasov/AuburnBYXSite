@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>Home Page</h2>
+<label for="cardNum">Card Number</label>
+<input type="text" class="form-control" name="input" id="cardNum" />
+<button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
+<hr />
+<label for="firstName">Name:</label>
+<span id="Name"></span>
+
+@section head {
+    <style type="text/css">
+        input[type="text"] {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $('#btn-submit').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Content("~/Home/GetName")",
+                    data: { input: $('#cardNum').val() },
+                    dataType: "json",
+                    success: function (object, textStatus, jqXHR) {
+                        $('#Name').text(object.firstName + " " + object.lastName);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("An error occurred while trying to complete your request. Please refresh the page. Error: " + textStatus + "," + errorThrown);
+                    }
+                });
+            });
+        });
+    </script>
+}

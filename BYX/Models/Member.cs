@@ -26,6 +26,7 @@ namespace BYX.Models
         public long Member_BannerID { get; set; }
         public int MemberType_ID { get; set; }
         public bool Deleted { get; set; }
+        public Nullable<long> Member_IgnitedNum { get; set; }
     
         public virtual ICollection<AttendanceRecord> AttendanceRecords { get; set; }
         public virtual MemberType MemberType { get; set; }

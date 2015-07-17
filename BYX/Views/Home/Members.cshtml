@@ -1,0 +1,48 @@
+﻿@model IEnumerable<BYX.Models.Member>
+
+@{
+    ViewBag.Title = "Members";
+}
+
+<h2>Members</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_EmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_BannerID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MemberType.MemberType_Name)
+        </th>
+    </tr>
+
+@foreach (BYX.Models.Member member in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => member.Member_FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => member.Member_LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => member.Member_EmailAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => member.Member_BannerID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => member.MemberType.MemberType_Name)
+        </td>
+    </tr>
+}
+
+</table>

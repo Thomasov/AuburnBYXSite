@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BYXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BYXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AttendanceRecords">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -41,6 +41,7 @@
           <Property Name="Member_LastName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Member_EmailAddress" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Member_BannerID" Type="bigint" Nullable="false" />
+          <Property Name="Member_IgnitedNum" Type="bigint" />
           <Property Name="MemberType_ID" Type="int" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
@@ -122,8 +123,7 @@
             <End Role="Members" EntitySet="Members" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BYXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -172,6 +172,7 @@
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AttendanceRecords" Relationship="Self.FK_AttendanceRecords_Members" FromRole="Members" ToRole="AttendanceRecords" />
           <NavigationProperty Name="MemberType" Relationship="Self.FK_Members_MemberTypes" FromRole="Members" ToRole="MemberTypes" />
+          <Property Name="Member_IgnitedNum" Type="Int64" />
         </EntityType>
         <EntityType Name="MemberType">
           <Key>
@@ -290,6 +291,7 @@
           <EntitySetMapping Name="Members">
             <EntityTypeMapping TypeName="BYXModel.Member">
               <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="Member_IgnitedNum" ColumnName="Member_IgnitedNum" />
                 <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
                 <ScalarProperty Name="Member_FirstName" ColumnName="Member_FirstName" />
                 <ScalarProperty Name="Member_LastName" ColumnName="Member_LastName" />
