@@ -97,6 +97,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\bootstrap-dialog.css" />
+    <Content Include="Content\css\main.css" />
+    <Content Include="Content\images\Crest.jpg" />
+    <Content Include="Content\js\bootstrap-dialog.js" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -111,10 +115,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Models\AttendanceRecord.cs">
       <DependentUpon>BYXEntities.tt</DependentUpon>
     </Compile>
@@ -136,6 +142,8 @@
     <Compile Include="Models\BYXEvent.cs">
       <DependentUpon>BYXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Models\EventMetaData.cs" />
     <Compile Include="Models\EventType.cs">
       <DependentUpon>BYXEntities.tt</DependentUpon>
     </Compile>
@@ -172,6 +180,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Members.cshtml" />
+    <Content Include="Views\Event\Create.cshtml" />
+    <Content Include="Views\Event\Delete.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
+    <Content Include="Views\Event\Edit.cshtml" />
+    <Content Include="Views\Event\Index.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -181,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Attendance\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

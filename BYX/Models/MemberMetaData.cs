@@ -11,7 +11,7 @@ namespace BYX.Models
     public class MemberMetaData
     {
         [Display(Name="First Name")]
-        [Required(ErrorMessage="First name is required lol.")]
+        [Required(ErrorMessage="First name is required.")]
         public string Member_FirstName { get; set; }
 
         [Display(Name = "Last Name")]
