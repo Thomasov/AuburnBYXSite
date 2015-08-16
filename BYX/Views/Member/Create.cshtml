@@ -1,0 +1,50 @@
+﻿@model BYX.Models.Member
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Add a member</h2>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "Please fix the following errors:", new { @class = "alert alert-danger" })
+
+    <div class="row">
+        <div class="col-lg-4 col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Member_FirstName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Member_FirstName, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Member_LastName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Member_LastName, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Member_EmailAddress, "Event Type", new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Member_EmailAddress, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Member_BannerID, "Event Type", new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Member_BannerID, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Member_IgnitedNum, "Event Type", new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Member_IgnitedNum, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MemberType_ID, "Member Type", new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.MemberType_ID, (SelectList)ViewBag.MemberType_ID, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+}

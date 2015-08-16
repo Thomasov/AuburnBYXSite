@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Pick Event";
+}
+
+<h2>Pick Event</h2>
+
+<div class="form-group">
+    <label>Todays Events</label>
+    @*@Html.DropDownList("Event_ID", (SelectList)ViewBag.Event_ID, new { @class = "form-control" })*@
+    <select class="form-control" id="Event_ID">
+        @foreach (BYX.Models.BYXEvent byxEvent in ViewBag.Events) {
+            <option value="@byxEvent.Event_ID">@byxEvent.Event_Name (@byxEvent.Event_StartDateTime.ToShortDateString())</option>
+        }
+    </select>
+    <button type="button" class="btn btn-primary" id="btn-submit">Go</button>
+</div>
+
+@section head {
+    <script type="text/javascript">
+        $(function () {
+            $('#btn-submit').click(function () {
+                window.location.href = "@Url.Content("~/Attendance/Swipe/")" + $('#Event_ID').val();
+            });
+        });
+    </script>
+}

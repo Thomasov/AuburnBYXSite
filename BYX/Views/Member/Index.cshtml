@@ -1,0 +1,63 @@
+﻿@model IEnumerable<BYX.Models.Member>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_EmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_BannerID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member_IgnitedNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MemberType.MemberType_Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member_FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member_LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member_EmailAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member_BannerID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member_IgnitedNum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MemberType.MemberType_Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Member_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Member_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Member_ID })
+        </td>
+    </tr>
+}
+
+</table>

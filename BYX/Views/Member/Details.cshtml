@@ -1,0 +1,74 @@
+﻿@model BYX.Models.Member
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Member</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Member_FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member_FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Member_LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member_LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Member_EmailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member_EmailAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Member_BannerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member_BannerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Member_IgnitedNum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Member_IgnitedNum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MemberType.MemberType_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MemberType.MemberType_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Member_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

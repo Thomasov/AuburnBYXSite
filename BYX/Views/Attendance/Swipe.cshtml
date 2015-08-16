@@ -1,0 +1,57 @@
+﻿@model BYX.Models.BYXEvent
+@{
+    ViewBag.Title = " BYX - Swipe";
+}
+
+<h2>Swipe for @Model.Event_Name</h2>
+
+<label for="cardNum">Ignited Number</label>
+<input type="text" class="form-control" name="input" id="cardNum" placeholder="Ignited Number"/>
+<button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
+<hr />
+<label for="firstName">Name:</label>
+<span id="Name"></span>
+
+@section head {
+    <script type="text/javascript">
+        $(function () {
+            var $cardNum = $('#cardNum');
+            $cardNum.focus();
+            $cardNum.keyup(function (e) {
+                if (e.keyCode == 13) {
+                    if ($cardNum.val().length == 17) {
+                        var ignitedNum = $cardNum.val().substring(1, 11);
+                        $cardNum.val(ignitedNum);
+                        var object = sendInput()
+                    });
+                    }
+                    else if ($cardNum.val().length == 7) {
+
+                    }
+                    else {
+                        $cardNum.val('');
+                        alert('You need to use an ignited card or enter an Auburn username.');
+                        $cardNum.blur();
+                    }
+                }
+            });
+        });
+
+        function sendInput(input) {
+            var returnObject;
+            $.ajax({
+                type: "POST",
+                url: "@Url.Content("~/Attendance/SwipeCreate")",
+                data: { input: input },
+                dataType: "json",
+                success: function (object, textStatus, jqXHR) {
+                    returnObject = object;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    returnObject = jqXHR;
+                }
+            });
+                return returnObject;
+        }
+    </script>
+}
