@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1eb601ff2465461f8397bc2dcb7f17a1" Name="Diagram1">
-        <EntityTypeShape EntityType="BYXModel.AttendanceRecord" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="BYXModel.BYXEvent" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BYXModel.EventType" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BYXModel.Member" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="BYXModel.MemberType" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <AssociationConnector Association="BYXModel.FK_AttendanceRecords_BYXEvents" ManuallyRouted="false" />
-        <AssociationConnector Association="BYXModel.FK_AttendanceRecords_Members" ManuallyRouted="false" />
-        <AssociationConnector Association="BYXModel.FK_BYXEvents_EventTypes" ManuallyRouted="false" />
-        <AssociationConnector Association="BYXModel.FK_Members_MemberTypes" ManuallyRouted="false" />
+      <Diagram DiagramId="170b63a3c76049bca14105ac292d9008" Name="Diagram1">
+        <EntityTypeShape EntityType="AuburnBYXDBModel.AttendanceRecord" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.BYXEvent" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.EventType" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.Member" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.MemberType" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_AttendanceRecords_BYXEvents" ManuallyRouted="false" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_AttendanceRecords_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_BYXEvents_EventTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_Members_MemberTypes" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

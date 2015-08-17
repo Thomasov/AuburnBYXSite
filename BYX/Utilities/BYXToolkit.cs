@@ -9,7 +9,7 @@ namespace BYX.Utilities
     {
         public static int GetTotalAbsences(Member member)
         {
-            using (BYXEntities db = new BYXEntities())
+            using (AuburnBYXDBEntities db = new AuburnBYXDBEntities())
             {
                 int totalAbsences = 0;
                 DateTime today = DateTime.Now;

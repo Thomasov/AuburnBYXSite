@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="BYXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="AuburnBYXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AttendanceRecords">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -41,9 +41,9 @@
           <Property Name="Member_LastName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Member_EmailAddress" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Member_BannerID" Type="bigint" Nullable="false" />
-          <Property Name="Member_IgnitedNum" Type="bigint" />
           <Property Name="MemberType_ID" Type="int" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="Member_IgnitedNum" Type="bigint" />
         </EntityType>
         <EntityType Name="MemberTypes">
           <Key>
@@ -100,7 +100,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BYXModelStoreContainer">
+        <EntityContainer Name="AuburnBYXDBModelStoreContainer">
           <EntitySet Name="AttendanceRecords" EntityType="Self.AttendanceRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BYXEvents" EntityType="Self.BYXEvents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventTypes" EntityType="Self.EventTypes" Schema="dbo" store:Type="Tables" />
@@ -123,10 +123,11 @@
             <End Role="Members" EntitySet="Members" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="BYXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="AuburnBYXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="AttendanceRecord">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -170,9 +171,9 @@
           <Property Name="Member_BannerID" Type="Int64" Nullable="false" />
           <Property Name="MemberType_ID" Type="Int32" Nullable="false" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Member_IgnitedNum" Type="Int64" />
           <NavigationProperty Name="AttendanceRecords" Relationship="Self.FK_AttendanceRecords_Members" FromRole="Members" ToRole="AttendanceRecords" />
           <NavigationProperty Name="MemberType" Relationship="Self.FK_Members_MemberTypes" FromRole="Members" ToRole="MemberTypes" />
-          <Property Name="Member_IgnitedNum" Type="Int64" />
         </EntityType>
         <EntityType Name="MemberType">
           <Key>
@@ -230,7 +231,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BYXEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="AuburnBYXDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AttendanceRecords" EntityType="Self.AttendanceRecord" />
           <EntitySet Name="BYXEvents" EntityType="Self.BYXEvent" />
           <EntitySet Name="EventTypes" EntityType="Self.EventType" />
@@ -258,9 +259,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BYXModelStoreContainer" CdmEntityContainer="BYXEntities">
+        <EntityContainerMapping StorageEntityContainer="AuburnBYXDBModelStoreContainer" CdmEntityContainer="AuburnBYXDBEntities">
           <EntitySetMapping Name="AttendanceRecords">
-            <EntityTypeMapping TypeName="BYXModel.AttendanceRecord">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.AttendanceRecord">
               <MappingFragment StoreEntitySet="AttendanceRecords">
                 <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
                 <ScalarProperty Name="Event_ID" ColumnName="Event_ID" />
@@ -269,7 +270,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BYXEvents">
-            <EntityTypeMapping TypeName="BYXModel.BYXEvent">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.BYXEvent">
               <MappingFragment StoreEntitySet="BYXEvents">
                 <ScalarProperty Name="Event_ID" ColumnName="Event_ID" />
                 <ScalarProperty Name="Event_StartDateTime" ColumnName="Event_StartDateTime" />
@@ -280,7 +281,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EventTypes">
-            <EntityTypeMapping TypeName="BYXModel.EventType">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.EventType">
               <MappingFragment StoreEntitySet="EventTypes">
                 <ScalarProperty Name="EventType_ID" ColumnName="EventType_ID" />
                 <ScalarProperty Name="EventType_Weight" ColumnName="EventType_Weight" />
@@ -289,9 +290,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Members">
-            <EntityTypeMapping TypeName="BYXModel.Member">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.Member">
               <MappingFragment StoreEntitySet="Members">
-                <ScalarProperty Name="Member_IgnitedNum" ColumnName="Member_IgnitedNum" />
                 <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
                 <ScalarProperty Name="Member_FirstName" ColumnName="Member_FirstName" />
                 <ScalarProperty Name="Member_LastName" ColumnName="Member_LastName" />
@@ -299,11 +299,12 @@
                 <ScalarProperty Name="Member_BannerID" ColumnName="Member_BannerID" />
                 <ScalarProperty Name="MemberType_ID" ColumnName="MemberType_ID" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Member_IgnitedNum" ColumnName="Member_IgnitedNum" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MemberTypes">
-            <EntityTypeMapping TypeName="BYXModel.MemberType">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.MemberType">
               <MappingFragment StoreEntitySet="MemberTypes">
                 <ScalarProperty Name="MemberType_ID" ColumnName="MemberType_ID" />
                 <ScalarProperty Name="MemberType_Name" ColumnName="MemberType_Name" />

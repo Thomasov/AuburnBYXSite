@@ -13,10 +13,10 @@ namespace BYX.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BYXEntities : DbContext
+    public partial class AuburnBYXDBEntities : DbContext
     {
-        public BYXEntities()
-            : base("name=BYXEntities")
+        public AuburnBYXDBEntities()
+            : base("name=AuburnBYXDBEntities")
         {
         }
     

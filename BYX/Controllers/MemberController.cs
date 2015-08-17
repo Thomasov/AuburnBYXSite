@@ -12,7 +12,7 @@ namespace BYX.Controllers
 {
     public class MemberController : Controller
     {
-        private BYXEntities db = new BYXEntities();
+        private AuburnBYXDBEntities db = new AuburnBYXDBEntities();
 
         // GET: /Member/
         public ActionResult Index()

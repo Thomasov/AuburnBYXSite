@@ -9,7 +9,7 @@ namespace BYX.Controllers
 {
     public class HomeController : Controller
     {
-        private BYXEntities db = new BYXEntities();
+        private AuburnBYXDBEntities db = new AuburnBYXDBEntities();
 
         /// <summary>
         /// Method for returning the view of the home page.
