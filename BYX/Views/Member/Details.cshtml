@@ -3,72 +3,28 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>Member</h4>
-	<hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Member_FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Member_FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Member_LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Member_LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Member_EmailAddress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Member_EmailAddress)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Member_BannerID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Member_BannerID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Deleted)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Deleted)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Member_IgnitedNum)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Member_IgnitedNum)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MemberType.MemberType_Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MemberType.MemberType_Name)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Member_ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <h2 class="member-name">@Model.Member_FirstName @Model.Member_LastName</h2>
+    <h4 class="help-block" style="display:inline-block;">(@Model.MemberType.MemberType_Name)</h4>
+    <div class="row">
+        <div class="col-md-2 col-xs-8 attr-block">
+            <p class="header">Email Address</p>
+            <p><a href="mailto:@Model.Member_EmailAddress"> @Model.Member_EmailAddress</a></p>
+        </div>
+        <div class="col-md-2 col-xs-8 attr-block">
+            <p class="header">Banner ID</p>
+            <p>@Model.Member_BannerID</p>
+        </div>
+        <div class="col-md-2 col-xs-8 attr-block">
+            <p class="header">Ignited Number</p>
+            <p>@Model.Member_IgnitedNum</p>
+        </div>
+    </div>
+<h3 style="display:inline-block;">Attendance Record</h3>
+<h4 class="help-block" style="display:inline-block;">(Total Absences: @ViewBag.TotalAbsences)</h4>
+@foreach (var attendance in ViewBag.attendance)
+{
+    <p>@attendance.Event_Name: @((attendance.Attended) ? "Attended" : "Absent")</p>
+}
+@section head {
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/Content/css/Details.css")" />
+}

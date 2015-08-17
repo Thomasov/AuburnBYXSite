@@ -1,0 +1,29 @@
+﻿.detail-p {
+    border-bottom: 1px solid #DDD;
+}
+
+.member-name {
+    margin: 20px 5px 5px 0px;
+    display: inline-block;
+}
+
+.attr-block {
+    border: 1px solid #C2C2C2;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.attr-block:hover {
+    background-color: #f7f7f7;
+}
+
+    .attr-block .header {
+        font-size: 16px;
+        border-bottom: 1px solid #C2C2C2;
+    }
+
+@media (min-width:961px) {
+    .attr-block {
+        margin-left: 10px;
+    }
+}

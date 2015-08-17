@@ -4,13 +4,12 @@
 }
 
 <h2>Swipe for @Model.Event_Name</h2>
-
+@Html.HiddenFor(f => f.Event_ID)
 <label for="cardNum">Ignited Number</label>
-<input type="text" class="form-control" name="input" id="cardNum" placeholder="Ignited Number"/>
+<input type="text" class="form-control" name="input" id="cardNum" placeholder="Ignited Number" />
 <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
 <hr />
-<label for="firstName">Name:</label>
-<span id="Name"></span>
+<span id="Message"></span>
 
 @section head {
     <script type="text/javascript">
@@ -19,39 +18,44 @@
             $cardNum.focus();
             $cardNum.keyup(function (e) {
                 if (e.keyCode == 13) {
-                    if ($cardNum.val().length == 17) {
-                        var ignitedNum = $cardNum.val().substring(1, 11);
-                        $cardNum.val(ignitedNum);
-                        var object = sendInput()
+                    var ignitedNum = $cardNum.val().substring(1, 11);
+                    $cardNum.val(ignitedNum);
+                    var ajaxCall = sendInput(ignitedNum);
+                    ajaxCall.success(function (object) {
+                        if (object.success) {
+                            $('#Message').text(object.fullname + " has successfully swiped in.");
+                            $cardNum.val('');
+                            $cardNum.focus();
+                        }
+                        else {
+                            $cardNum.val('');
+                            alert(object.errormessage);
+                        }
                     });
-                    }
-                    else if ($cardNum.val().length == 7) {
-
-                    }
-                    else {
-                        $cardNum.val('');
-                        alert('You need to use an ignited card or enter an Auburn username.');
-                        $cardNum.blur();
-                    }
                 }
+                //else {
+                //    $cardNum.val('');
+                //    alert('You need to use an ignited card or enter an Auburn username.');
+                //    $cardNum.blur();
+                //}
             });
+            function sendInput(input) {
+                return $.ajax({
+                    type: "POST",
+                    url: "@Url.Content("~/Attendance/SwipeCreate")",
+                    data: {
+                        input: input,
+                        eventID: $('#Event_ID').val()
+                    },
+                    dataType: "json",
+                    success: function (object, textStatus, jqXHR) {
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                    }
+                });
+            }
         });
 
-        function sendInput(input) {
-            var returnObject;
-            $.ajax({
-                type: "POST",
-                url: "@Url.Content("~/Attendance/SwipeCreate")",
-                data: { input: input },
-                dataType: "json",
-                success: function (object, textStatus, jqXHR) {
-                    returnObject = object;
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    returnObject = jqXHR;
-                }
-            });
-                return returnObject;
-        }
+
     </script>
 }

@@ -33,6 +33,16 @@ namespace BYX.Controllers
             {
                 return HttpNotFound();
             }
+            DateTime today = DateTime.Now;
+            List<BYXEvent> Events = db.BYXEvents.Where(f => !f.Deleted && f.Event_StartDateTime < today).ToList();
+            List<int> attendedEvents = member.AttendanceRecords.Select(f => f.Event_ID).ToList();
+            List<AttendanceOutput> outputs = new List<AttendanceOutput>();
+            foreach (BYXEvent byxEvent in Events)
+            {
+                outputs.Add(new AttendanceOutput(byxEvent.Event_Name, attendedEvents.Contains(byxEvent.Event_ID)));
+            }
+            ViewBag.Attendance = outputs;
+            ViewBag.TotalAbsences = outputs.Count(f => !f.Attended);
             return View(member);
         }
 
@@ -129,6 +139,19 @@ namespace BYX.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+    }
+
+    public class AttendanceOutput
+    {
+        public string Event_Name { get; set; }
+
+        public bool Attended { get; set; }
+
+        public AttendanceOutput(string eventName, bool attended)
+        {
+            this.Event_Name = eventName;
+            this.Attended = attended;
         }
     }
 }
