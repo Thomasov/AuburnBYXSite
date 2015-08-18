@@ -33,7 +33,7 @@ namespace BYX.Controllers
             {
                 return HttpNotFound();
             }
-            DateTime today = DateTime.Now;
+            DateTime today = DateTime.UtcNow;
             List<BYXEvent> Events = db.BYXEvents.Where(f => !f.Deleted && f.Event_StartDateTime < today).ToList();
             List<int> attendedEvents = member.AttendanceRecords.Select(f => f.Event_ID).ToList();
             List<AttendanceOutput> outputs = new List<AttendanceOutput>();

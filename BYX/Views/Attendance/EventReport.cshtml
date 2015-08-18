@@ -1,0 +1,49 @@
+﻿@model BYX.Models.EventReportViewModel
+
+@{
+    ViewBag.Title = "Auburn BYX";
+}
+
+<h2>@Model.Event.Event_Name</h2>
+<h4>Total Absences: @Model.eventReports.Count(f => !f.Attended) out of @Model.eventReports.Count()</h4>
+<table class="table">
+    <tr>
+        <th>
+            Member Name
+        </th>
+        <th>
+            Attendance
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var report in Model.eventReports) {
+    <tr class="attended-@(report.Attended.ToString())">
+        
+        <td>
+           @Html.ActionLink(report.Name, "Details", "Member", new { id = report.Member_ID }, null)
+        </td>
+        <td>
+            @((Convert.ToBoolean(report.Attended)) ? "Attended": "Absent")
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = report.Member_ID }, new { @class = "btn btn-default" })
+        </td>
+    </tr>
+}
+</table>
+
+@section head {
+    <style type="text/css">
+        .attended-False {
+            background-color: #F27F7F;
+            color: #FFF;
+        }
+        .attended-False a {
+            color: #FFF;
+        }
+            .attended-False .btn-default {
+                color: #333;
+            }
+    </style>
+}

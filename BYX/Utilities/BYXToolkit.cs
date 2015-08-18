@@ -12,7 +12,7 @@ namespace BYX.Utilities
             using (AuburnBYXDBEntities db = new AuburnBYXDBEntities())
             {
                 int totalAbsences = 0;
-                DateTime today = DateTime.Now;
+                DateTime today = DateTime.UtcNow;
                 List<BYXEvent> Events = db.BYXEvents.Where(f => !f.Deleted && f.Event_StartDateTime < today).ToList();
                 List<int> attendedEvents = member.AttendanceRecords.Select(f => f.Event_ID).ToList();
                 foreach (BYXEvent byxEvent in Events)

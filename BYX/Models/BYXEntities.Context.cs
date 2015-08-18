@@ -12,6 +12,8 @@ namespace BYX.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class AuburnBYXDBEntities : DbContext
     {
@@ -30,5 +32,14 @@ namespace BYX.Models
         public virtual DbSet<EventType> EventTypes { get; set; }
         public virtual DbSet<Member> Members { get; set; }
         public virtual DbSet<MemberType> MemberTypes { get; set; }
+    
+        public virtual ObjectResult<sp_EventAttendanceRecord_Result> sp_EventAttendanceRecord(Nullable<int> p_EventID)
+        {
+            var p_EventIDParameter = p_EventID.HasValue ?
+                new ObjectParameter("p_EventID", p_EventID) :
+                new ObjectParameter("p_EventID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_EventAttendanceRecord_Result>("sp_EventAttendanceRecord", p_EventIDParameter);
+        }
     }
 }

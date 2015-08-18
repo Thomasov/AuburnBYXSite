@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AuburnBYXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AuburnBYXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AttendanceRecords">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -100,6 +100,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_EventAttendanceRecord" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="AuburnBYXUser">
+          <Parameter Name="p_EventID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="AuburnBYXDBModelStoreContainer">
           <EntitySet Name="AttendanceRecords" EntityType="Self.AttendanceRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BYXEvents" EntityType="Self.BYXEvents" Schema="dbo" store:Type="Tables" />
@@ -123,8 +126,7 @@
             <End Role="Members" EntitySet="Members" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AuburnBYXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -253,7 +255,15 @@
             <End Role="MemberTypes" EntitySet="MemberTypes" />
             <End Role="Members" EntitySet="Members" />
           </AssociationSet>
+          <FunctionImport Name="sp_EventAttendanceRecord" ReturnType="Collection(AuburnBYXDBModel.sp_EventAttendanceRecord_Result)">
+          <Parameter Name="p_EventID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="sp_EventAttendanceRecord_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="101" />
+          <Property Type="Boolean" Name="Attended" Nullable="false" />
+          <Property Type="Int32" Name="Member_ID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -311,6 +321,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_EventAttendanceRecord" FunctionName="AuburnBYXDBModel.Store.sp_EventAttendanceRecord">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AuburnBYXDBModel.sp_EventAttendanceRecord_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Attended" ColumnName="Attended" />
+                <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
