@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Admin Tools</h2>
+<ul>
+    <li class="li-no-bullet">
+        <p class="link">
+            @Html.ActionLink("Start Swiping", "PickEvent", "Attendance")
+        </p>
+    </li>
+    <li>
+        <p class="link-description">
+            Start swiping into any event that's happening today.
+        </p>
+    </li>
+    <li class="li-no-bullet">
+        <p class="link">
+            @Html.ActionLink("View Events", "Index", "Event")
+        </p>
+    </li>
+    <li>
+        <p class="link-description">
+            Look at all of the upcoming and past events. Can create new events and edit or delete existing events from here. 
+        </p>
+    </li>
+    <li class="li-no-bullet">
+        <p class="link">
+            @Html.ActionLink("View All Members", "Index", "Member")
+        </p>
+    </li>
+    <li>
+        <p class="link-description">
+            View all members, including pledges and alumni
+        </p>
+    </li>
+</ul>
+@section head {
+    <style type="text/css">
+        .link-description {
+            margin-left: 20px;
+        }
+    </style>
+}

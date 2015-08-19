@@ -1,0 +1,50 @@
+﻿@model BYX.Models.BYXEvent
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BYXEvent</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Event_StartDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event_StartDateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Event_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventType.EventType_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventType.EventType_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Event_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
