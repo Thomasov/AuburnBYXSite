@@ -13,6 +13,7 @@
           <Property Name="Member_ID" Type="int" Nullable="false" />
           <Property Name="Event_ID" Type="int" Nullable="false" />
           <Property Name="SwipeTime" Type="datetime" Nullable="false" />
+          <Property Name="isExcusedAbsence" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="BYXEvents">
           <Key>
@@ -130,6 +131,37 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AuburnBYXDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AuburnBYXDBEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_EventAttendanceRecord" ReturnType="Collection(AuburnBYXDBModel.sp_EventAttendanceRecord_Result)">
+          <Parameter Name="p_EventID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="AttendanceRecords" EntityType="AuburnBYXDBModel.AttendanceRecord" />
+          <EntitySet Name="BYXEvents" EntityType="AuburnBYXDBModel.BYXEvent" />
+          <EntitySet Name="EventTypes" EntityType="AuburnBYXDBModel.EventType" />
+          <EntitySet Name="Members" EntityType="AuburnBYXDBModel.Member" />
+          <EntitySet Name="MemberTypes" EntityType="AuburnBYXDBModel.MemberType" />
+          <AssociationSet Name="FK_AttendanceRecords_BYXEvents" Association="AuburnBYXDBModel.FK_AttendanceRecords_BYXEvents">
+            <End Role="BYXEvent" EntitySet="BYXEvents" />
+            <End Role="AttendanceRecord" EntitySet="AttendanceRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttendanceRecords_Members" Association="AuburnBYXDBModel.FK_AttendanceRecords_Members">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="AttendanceRecord" EntitySet="AttendanceRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BYXEvents_EventTypes" Association="AuburnBYXDBModel.FK_BYXEvents_EventTypes">
+            <End Role="EventType" EntitySet="EventTypes" />
+            <End Role="BYXEvent" EntitySet="BYXEvents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Members_MemberTypes" Association="AuburnBYXDBModel.FK_Members_MemberTypes">
+            <End Role="MemberType" EntitySet="MemberTypes" />
+            <End Role="Member" EntitySet="Members" />
+          </AssociationSet>
+        </EntityContainer>
+        <ComplexType Name="sp_EventAttendanceRecord_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="101" />
+          <Property Type="String" Name="Attended" Nullable="true" MaxLength="8" />
+          <Property Type="Int32" Name="Member_ID" Nullable="false" />
+        </ComplexType>
         <EntityType Name="AttendanceRecord">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -138,8 +170,9 @@
           <Property Name="Member_ID" Type="Int32" Nullable="false" />
           <Property Name="Event_ID" Type="Int32" Nullable="false" />
           <Property Name="SwipeTime" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="BYXEvent" Relationship="Self.FK_AttendanceRecords_BYXEvents" FromRole="AttendanceRecords" ToRole="BYXEvents" />
-          <NavigationProperty Name="Member" Relationship="Self.FK_AttendanceRecords_Members" FromRole="AttendanceRecords" ToRole="Members" />
+          <Property Name="isExcusedAbsence" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BYXEvent" Relationship="AuburnBYXDBModel.FK_AttendanceRecords_BYXEvents" FromRole="AttendanceRecord" ToRole="BYXEvent" />
+          <NavigationProperty Name="Member" Relationship="AuburnBYXDBModel.FK_AttendanceRecords_Members" FromRole="AttendanceRecord" ToRole="Member" />
         </EntityType>
         <EntityType Name="BYXEvent">
           <Key>
@@ -147,11 +180,11 @@
           </Key>
           <Property Name="Event_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Event_StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Event_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Event_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="EventType_ID" Type="Int32" Nullable="false" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="AttendanceRecords" Relationship="Self.FK_AttendanceRecords_BYXEvents" FromRole="BYXEvents" ToRole="AttendanceRecords" />
-          <NavigationProperty Name="EventType" Relationship="Self.FK_BYXEvents_EventTypes" FromRole="BYXEvents" ToRole="EventTypes" />
+          <NavigationProperty Name="AttendanceRecords" Relationship="AuburnBYXDBModel.FK_AttendanceRecords_BYXEvents" FromRole="BYXEvent" ToRole="AttendanceRecord" />
+          <NavigationProperty Name="EventType" Relationship="AuburnBYXDBModel.FK_BYXEvents_EventTypes" FromRole="BYXEvent" ToRole="EventType" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -159,168 +192,86 @@
           </Key>
           <Property Name="EventType_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EventType_Weight" Type="Int32" Nullable="false" />
-          <Property Name="EventType_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="BYXEvents" Relationship="Self.FK_BYXEvents_EventTypes" FromRole="EventTypes" ToRole="BYXEvents" />
+          <Property Name="EventType_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BYXEvents" Relationship="AuburnBYXDBModel.FK_BYXEvents_EventTypes" FromRole="EventType" ToRole="BYXEvent" />
         </EntityType>
         <EntityType Name="Member">
           <Key>
             <PropertyRef Name="Member_ID" />
           </Key>
           <Property Name="Member_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Member_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Member_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Member_EmailAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Member_FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Member_LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Member_EmailAddress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Member_BannerID" Type="Int64" Nullable="false" />
           <Property Name="MemberType_ID" Type="Int32" Nullable="false" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="Member_IgnitedNum" Type="Int64" />
-          <NavigationProperty Name="AttendanceRecords" Relationship="Self.FK_AttendanceRecords_Members" FromRole="Members" ToRole="AttendanceRecords" />
-          <NavigationProperty Name="MemberType" Relationship="Self.FK_Members_MemberTypes" FromRole="Members" ToRole="MemberTypes" />
+          <NavigationProperty Name="AttendanceRecords" Relationship="AuburnBYXDBModel.FK_AttendanceRecords_Members" FromRole="Member" ToRole="AttendanceRecord" />
+          <NavigationProperty Name="MemberType" Relationship="AuburnBYXDBModel.FK_Members_MemberTypes" FromRole="Member" ToRole="MemberType" />
         </EntityType>
         <EntityType Name="MemberType">
           <Key>
             <PropertyRef Name="MemberType_ID" />
           </Key>
           <Property Name="MemberType_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MemberType_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Members" Relationship="Self.FK_Members_MemberTypes" FromRole="MemberTypes" ToRole="Members" />
+          <Property Name="MemberType_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Members" Relationship="AuburnBYXDBModel.FK_Members_MemberTypes" FromRole="MemberType" ToRole="Member" />
         </EntityType>
         <Association Name="FK_AttendanceRecords_BYXEvents">
-          <End Role="BYXEvents" Type="Self.BYXEvent" Multiplicity="1" />
-          <End Role="AttendanceRecords" Type="Self.AttendanceRecord" Multiplicity="*" />
+          <End Type="AuburnBYXDBModel.BYXEvent" Role="BYXEvent" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.AttendanceRecord" Role="AttendanceRecord" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="BYXEvents">
+            <Principal Role="BYXEvent">
               <PropertyRef Name="Event_ID" />
             </Principal>
-            <Dependent Role="AttendanceRecords">
+            <Dependent Role="AttendanceRecord">
               <PropertyRef Name="Event_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AttendanceRecords_Members">
-          <End Role="Members" Type="Self.Member" Multiplicity="1" />
-          <End Role="AttendanceRecords" Type="Self.AttendanceRecord" Multiplicity="*" />
+          <End Type="AuburnBYXDBModel.Member" Role="Member" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.AttendanceRecord" Role="AttendanceRecord" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Members">
+            <Principal Role="Member">
               <PropertyRef Name="Member_ID" />
             </Principal>
-            <Dependent Role="AttendanceRecords">
+            <Dependent Role="AttendanceRecord">
               <PropertyRef Name="Member_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BYXEvents_EventTypes">
-          <End Role="EventTypes" Type="Self.EventType" Multiplicity="1" />
-          <End Role="BYXEvents" Type="Self.BYXEvent" Multiplicity="*" />
+          <End Type="AuburnBYXDBModel.EventType" Role="EventType" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.BYXEvent" Role="BYXEvent" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="EventTypes">
+            <Principal Role="EventType">
               <PropertyRef Name="EventType_ID" />
             </Principal>
-            <Dependent Role="BYXEvents">
+            <Dependent Role="BYXEvent">
               <PropertyRef Name="EventType_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Members_MemberTypes">
-          <End Role="MemberTypes" Type="Self.MemberType" Multiplicity="1" />
-          <End Role="Members" Type="Self.Member" Multiplicity="*" />
+          <End Type="AuburnBYXDBModel.MemberType" Role="MemberType" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.Member" Role="Member" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="MemberTypes">
+            <Principal Role="MemberType">
               <PropertyRef Name="MemberType_ID" />
             </Principal>
-            <Dependent Role="Members">
+            <Dependent Role="Member">
               <PropertyRef Name="MemberType_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="AuburnBYXDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AttendanceRecords" EntityType="Self.AttendanceRecord" />
-          <EntitySet Name="BYXEvents" EntityType="Self.BYXEvent" />
-          <EntitySet Name="EventTypes" EntityType="Self.EventType" />
-          <EntitySet Name="Members" EntityType="Self.Member" />
-          <EntitySet Name="MemberTypes" EntityType="Self.MemberType" />
-          <AssociationSet Name="FK_AttendanceRecords_BYXEvents" Association="Self.FK_AttendanceRecords_BYXEvents">
-            <End Role="BYXEvents" EntitySet="BYXEvents" />
-            <End Role="AttendanceRecords" EntitySet="AttendanceRecords" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AttendanceRecords_Members" Association="Self.FK_AttendanceRecords_Members">
-            <End Role="Members" EntitySet="Members" />
-            <End Role="AttendanceRecords" EntitySet="AttendanceRecords" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BYXEvents_EventTypes" Association="Self.FK_BYXEvents_EventTypes">
-            <End Role="EventTypes" EntitySet="EventTypes" />
-            <End Role="BYXEvents" EntitySet="BYXEvents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Members_MemberTypes" Association="Self.FK_Members_MemberTypes">
-            <End Role="MemberTypes" EntitySet="MemberTypes" />
-            <End Role="Members" EntitySet="Members" />
-          </AssociationSet>
-          <FunctionImport Name="sp_EventAttendanceRecord" ReturnType="Collection(AuburnBYXDBModel.sp_EventAttendanceRecord_Result)">
-          <Parameter Name="p_EventID" Mode="In" Type="Int32" />
-          </FunctionImport>
-        </EntityContainer>
-        <ComplexType Name="sp_EventAttendanceRecord_Result">
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="101" />
-          <Property Type="Boolean" Name="Attended" Nullable="false" />
-          <Property Type="Int32" Name="Member_ID" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AuburnBYXDBModelStoreContainer" CdmEntityContainer="AuburnBYXDBEntities">
-          <EntitySetMapping Name="AttendanceRecords">
-            <EntityTypeMapping TypeName="AuburnBYXDBModel.AttendanceRecord">
-              <MappingFragment StoreEntitySet="AttendanceRecords">
-                <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
-                <ScalarProperty Name="Event_ID" ColumnName="Event_ID" />
-                <ScalarProperty Name="SwipeTime" ColumnName="SwipeTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BYXEvents">
-            <EntityTypeMapping TypeName="AuburnBYXDBModel.BYXEvent">
-              <MappingFragment StoreEntitySet="BYXEvents">
-                <ScalarProperty Name="Event_ID" ColumnName="Event_ID" />
-                <ScalarProperty Name="Event_StartDateTime" ColumnName="Event_StartDateTime" />
-                <ScalarProperty Name="Event_Name" ColumnName="Event_Name" />
-                <ScalarProperty Name="EventType_ID" ColumnName="EventType_ID" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EventTypes">
-            <EntityTypeMapping TypeName="AuburnBYXDBModel.EventType">
-              <MappingFragment StoreEntitySet="EventTypes">
-                <ScalarProperty Name="EventType_ID" ColumnName="EventType_ID" />
-                <ScalarProperty Name="EventType_Weight" ColumnName="EventType_Weight" />
-                <ScalarProperty Name="EventType_Name" ColumnName="EventType_Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Members">
-            <EntityTypeMapping TypeName="AuburnBYXDBModel.Member">
-              <MappingFragment StoreEntitySet="Members">
-                <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
-                <ScalarProperty Name="Member_FirstName" ColumnName="Member_FirstName" />
-                <ScalarProperty Name="Member_LastName" ColumnName="Member_LastName" />
-                <ScalarProperty Name="Member_EmailAddress" ColumnName="Member_EmailAddress" />
-                <ScalarProperty Name="Member_BannerID" ColumnName="Member_BannerID" />
-                <ScalarProperty Name="MemberType_ID" ColumnName="MemberType_ID" />
-                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
-                <ScalarProperty Name="Member_IgnitedNum" ColumnName="Member_IgnitedNum" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MemberTypes">
-            <EntityTypeMapping TypeName="AuburnBYXDBModel.MemberType">
-              <MappingFragment StoreEntitySet="MemberTypes">
-                <ScalarProperty Name="MemberType_ID" ColumnName="MemberType_ID" />
-                <ScalarProperty Name="MemberType_Name" ColumnName="MemberType_Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_EventAttendanceRecord" FunctionName="AuburnBYXDBModel.Store.sp_EventAttendanceRecord">
             <ResultMapping>
               <ComplexTypeMapping TypeName="AuburnBYXDBModel.sp_EventAttendanceRecord_Result">
@@ -330,6 +281,58 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="AttendanceRecords">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.AttendanceRecord">
+              <MappingFragment StoreEntitySet="AttendanceRecords">
+                <ScalarProperty Name="isExcusedAbsence" ColumnName="isExcusedAbsence" />
+                <ScalarProperty Name="SwipeTime" ColumnName="SwipeTime" />
+                <ScalarProperty Name="Event_ID" ColumnName="Event_ID" />
+                <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BYXEvents">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.BYXEvent">
+              <MappingFragment StoreEntitySet="BYXEvents">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="EventType_ID" ColumnName="EventType_ID" />
+                <ScalarProperty Name="Event_Name" ColumnName="Event_Name" />
+                <ScalarProperty Name="Event_StartDateTime" ColumnName="Event_StartDateTime" />
+                <ScalarProperty Name="Event_ID" ColumnName="Event_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypes">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.EventType">
+              <MappingFragment StoreEntitySet="EventTypes">
+                <ScalarProperty Name="EventType_Name" ColumnName="EventType_Name" />
+                <ScalarProperty Name="EventType_Weight" ColumnName="EventType_Weight" />
+                <ScalarProperty Name="EventType_ID" ColumnName="EventType_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.Member">
+              <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="Member_IgnitedNum" ColumnName="Member_IgnitedNum" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="MemberType_ID" ColumnName="MemberType_ID" />
+                <ScalarProperty Name="Member_BannerID" ColumnName="Member_BannerID" />
+                <ScalarProperty Name="Member_EmailAddress" ColumnName="Member_EmailAddress" />
+                <ScalarProperty Name="Member_LastName" ColumnName="Member_LastName" />
+                <ScalarProperty Name="Member_FirstName" ColumnName="Member_FirstName" />
+                <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MemberTypes">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.MemberType">
+              <MappingFragment StoreEntitySet="MemberTypes">
+                <ScalarProperty Name="MemberType_Name" ColumnName="MemberType_Name" />
+                <ScalarProperty Name="MemberType_ID" ColumnName="MemberType_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

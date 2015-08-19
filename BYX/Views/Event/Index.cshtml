@@ -30,7 +30,7 @@
                 @Html.ActionLink(item.Event_Name, "EventReport", "Attendance", new { id = item.Event_ID }, null)
             </td>
             <td>
-                @item.Event_StartDateTime.ToString("MMM dd yyyy a't' h:mm tt")
+                @item.Event_StartDateTime.ToLocalTime().ToString("MMM dd yyyy a't' h:mm tt")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EventType.EventType_Name)

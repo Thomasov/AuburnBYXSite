@@ -18,9 +18,12 @@
             $cardNum.focus();
             $cardNum.keyup(function (e) {
                 if (e.keyCode == 13) {
-                    var ignitedNum = $cardNum.val().substring(1, 11);
-                    $cardNum.val(ignitedNum);
-                    var ajaxCall = sendInput(ignitedNum);
+                    var cardNumber = $cardNum.val()
+                    if ($cardNum.val().length == 17) {
+                        var cardNumber = cardNumber.substring(1, 11);
+                        $cardNum.val(cardNumber);
+                    }
+                    var ajaxCall = sendInput(cardNumber);
                     ajaxCall.success(function (object) {
                         if (object.success) {
                             $('#Message').text(object.fullname + " has successfully swiped in.");
@@ -38,6 +41,20 @@
                 //    alert('You need to use an ignited card or enter an Auburn username.');
                 //    $cardNum.blur();
                 //}
+            });
+            $('#btn-submit').click(function () {
+                var ajaxCall = sendInput($cardNum.val());
+                ajaxCall.success(function (object) {
+                    if (object.success) {
+                        $('#Message').text(object.fullname + " has successfully swiped in.");
+                        $cardNum.val('');
+                        $cardNum.focus();
+                    }
+                    else {
+                        $cardNum.val('');
+                        alert(object.errormessage);
+                    }
+                });
             });
             function sendInput(input) {
                 return $.ajax({

@@ -71,6 +71,7 @@ namespace BYX.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             BYXEvent byxevent = db.BYXEvents.Find(id);
+            byxevent.Event_StartDateTime = byxevent.Event_StartDateTime.ToLocalTime();
             if (byxevent == null)
             {
                 return HttpNotFound();

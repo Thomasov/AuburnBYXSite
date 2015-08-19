@@ -4,8 +4,10 @@
     ViewBag.Title = "Auburn BYX";
 }
 
-<h2>@Model.Event.Event_Name</h2>
-<h4>Total Absences: @Model.eventReports.Count(f => !f.Attended) out of @Model.eventReports.Count()</h4>
+<h2>@Model.Event.Event_Name on @Model.Event.Event_StartDateTime.ToLocalTime().ToString("MMM dd, yyyy a't' h:mm tt")</h2>
+<h4>Total Absences: @Model.eventReports.Count(f => f.Attended == "Absent") out of @Model.eventReports.Count()</h4>
+<h4>Total Late: @Model.eventReports.Count(f => f.Attended == "Late") out of @Model.eventReports.Count()</h4>
+<h4>Total Excused: @Model.eventReports.Count(f => f.Attended == "Excused") out of @Model.eventReports.Count()</h4>
 <table class="table">
     <tr>
         <th>
@@ -17,33 +19,83 @@
         <th></th>
     </tr>
 
-@foreach (var report in Model.eventReports) {
-    <tr class="attended-@(report.Attended.ToString())">
-        
-        <td>
-           @Html.ActionLink(report.Name, "Details", "Member", new { id = report.Member_ID }, null)
-        </td>
-        <td>
-            @((Convert.ToBoolean(report.Attended)) ? "Attended": "Absent")
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = report.Member_ID }, new { @class = "btn btn-default" })
-        </td>
-    </tr>
-}
+    @foreach (var report in Model.eventReports)
+    {
+        <tr class="@report.Attended.ToLower()">
+
+            <td id="name-@report.Member_ID">
+                @Html.ActionLink(report.Name, "Details", "Member", new { id = report.Member_ID }, null)
+            </td>
+            <td id="attendance-@report.Member_ID">
+                @report.Attended
+            </td>
+            <td>
+                <button type="button" class="btn btn-default btn-edit" data-id="@report.Member_ID">Edit</button>
+            </td>
+        </tr>
+    }
 </table>
 
 @section head {
     <style type="text/css">
-        .attended-False {
+        .absent {
             background-color: #F27F7F;
             color: #FFF;
         }
-        .attended-False a {
-            color: #FFF;
-        }
-            .attended-False .btn-default {
+
+            .absent a {
+                color: #FFF;
+            }
+
+            .absent .btn-default {
                 color: #333;
             }
+
+        .excused {
+            background-color: #FFD0AC;
+        }
+
+        .late {
+            background-color: #F2F267;
+        }
     </style>
+    <link href="@Url.Content("~/Content/css/bootstrap-dialog.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/js/bootstrap-dialog.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.btn-edit').click(function () {
+                var id = $(this).attr('data-id').trim();
+                var name = $('#name-' + id).text().trim();
+                console.log(name);
+                BootstrapDialog.show({
+                    title: name,
+                    message: "",
+                    type: BootstrapDialog.TYPE_PRIMARY,
+                    buttons: [{
+                        label: "Save",
+                        action: function (dialogItself) {
+                            $.ajax({
+                                type: "POST",
+                                url: "@Url.Content("~/Event/DeleteConfirmed")",
+                                data: { id: id },
+                                dataType: "json",
+                                success: function (object, textStatus, jqXHR) {
+                                    $('#row-' + id).remove();
+                                    dialogItself.close();
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log(jqXHR);
+                                }
+                            });
+                        }
+                    }, {
+                        label: "Cancel",
+                        action: function (dialogItself) {
+                            dialogItself.close();
+                        }
+                    }]
+                });
+            });
+        });
+    </script>
 }

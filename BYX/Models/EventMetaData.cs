@@ -12,7 +12,7 @@ namespace BYX.Models
     {
         [Display(Name="Start Time")]
         [Required(ErrorMessage="Start Time is required.")]
-        public string Event_StartDateTime { get; set; }
+        public DateTime Event_StartDateTime { get; set; }
 
         [Display(Name="Name")]
         [Required(ErrorMessage = "Name is required.")]

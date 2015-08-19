@@ -39,7 +39,7 @@ namespace BYX.Controllers
         {
             if (!String.IsNullOrEmpty(input))
             {
-                long ignitedNumber;
+                long cardNumber;
                 BYXEvent byxEvent = db.BYXEvents.Find(eventID);
                 if (byxEvent == null)
                 {
@@ -51,12 +51,16 @@ namespace BYX.Controllers
                 Member member = new Member();
                 bool isValidNumber = true;
                 //check if the ignited number is a real number, if it is get the member
-                if (long.TryParse(input, out ignitedNumber))
+                if (long.TryParse(input, out cardNumber))
                 {
-                    member = db.Members.SingleOrDefault(f => f.Member_IgnitedNum == ignitedNumber);
+                    member = db.Members.SingleOrDefault(f => f.Member_IgnitedNum == cardNumber);
                     if (member == null)
                     {
-                        isValidNumber = false;
+                        member = db.Members.SingleOrDefault(f => f.Member_BannerID == cardNumber);
+                        if (member == null)
+                        {
+                            isValidNumber = false;
+                        }
                     }
                 }
                 else
@@ -82,6 +86,7 @@ namespace BYX.Controllers
                 swipe.SwipeTime = DateTime.UtcNow;
                 swipe.Member_ID = member.Member_ID;
                 swipe.Event_ID = eventID;
+                swipe.isExcusedAbsence = false;
                 db.AttendanceRecords.Add(swipe);
                 try
                 {

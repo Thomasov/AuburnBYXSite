@@ -17,6 +17,7 @@ namespace BYX.Models
         public int Member_ID { get; set; }
         public int Event_ID { get; set; }
         public System.DateTime SwipeTime { get; set; }
+        public bool isExcusedAbsence { get; set; }
     
         public virtual BYXEvent BYXEvent { get; set; }
         public virtual Member Member { get; set; }

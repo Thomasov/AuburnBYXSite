@@ -14,7 +14,7 @@ namespace BYX.Models
     public partial class sp_EventAttendanceRecord_Result
     {
         public string Name { get; set; }
-        public bool Attended { get; set; }
+        public string Attended { get; set; }
         public int Member_ID { get; set; }
     }
 }
