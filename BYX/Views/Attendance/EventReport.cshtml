@@ -16,18 +16,22 @@
         <th>
             Attendance
         </th>
+        <th>Time Swiped</th>
         <th></th>
     </tr>
 
     @foreach (var report in Model.eventReports)
     {
-        <tr class="@report.Attended.ToLower()">
+        <tr id="row-@report.Member_ID" class="@report.Attended.ToLower()">
 
             <td id="name-@report.Member_ID">
                 @Html.ActionLink(report.Name, "Details", "Member", new { id = report.Member_ID }, null)
             </td>
             <td id="attendance-@report.Member_ID">
                 @report.Attended
+            </td>
+            <td>
+                @((report.SwipeTime.HasValue) ? report.SwipeTime.Value.ToLocalTime().ToString("h:mm tt") : "")
             </td>
             <td>
                 <button type="button" class="btn btn-default btn-edit" data-id="@report.Member_ID">Edit</button>
@@ -69,33 +73,61 @@
                 console.log(name);
                 BootstrapDialog.show({
                     title: name,
-                    message: "",
+                    message: "<h4>Currently: " + $('#attendance-' + id).text().trim() + "</h4>",
                     type: BootstrapDialog.TYPE_PRIMARY,
                     buttons: [{
-                        label: "Save",
+                        label: "Attended",
+                        cssClass: 'btn btn-success',
                         action: function (dialogItself) {
-                            $.ajax({
-                                type: "POST",
-                                url: "@Url.Content("~/Event/DeleteConfirmed")",
-                                data: { id: id },
-                                dataType: "json",
-                                success: function (object, textStatus, jqXHR) {
-                                    $('#row-' + id).remove();
-                                    dialogItself.close();
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    console.log(jqXHR);
-                                }
+                            $.ajax(changeAttendance(id, 'Attended')).complete(function(){
+                                dialogItself.close();
                             });
                         }
                     }, {
-                        label: "Cancel",
+                        label: "Late",
+                        cssClass: 'btn btn-warning',
                         action: function (dialogItself) {
                             dialogItself.close();
+                        }
+                    }, {
+                        label: "Absent",
+                        cssClass: 'btn btn-danger',
+                        action: function (dialogItself) {
+                            dialogItself.close();
+                        }
+                    }, {
+                        label: "Excused",
+                        cssClass: 'btn btn-default',
+                        action: function (dialogItself) {
+                            $.ajax(changeAttendance(id, 'Excused')).complete(function () {
+                                dialogItself.close();
+                            });
                         }
                     }]
                 });
             });
+
+            function changeAttendance(memberID, attendanceType) {
+                return {
+                    type: "POST",
+                    url: "@Url.Content("~/Attendance/ChangeAttendance")",
+                    data: {
+                        eventID: parseInt('@Model.Event.Event_ID'),
+                        memberID: memberID,
+                        attendanceType: attendanceType
+                    },
+                    dataType: "json",
+                    success: function (object, textStatus, jqXHR) {
+                        if (object.success) {
+                            document.getElementById('row-' + memberID).className = attendanceType.toLowerCase();
+                            $('#attendance-' + memberID).text(attendanceType);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR);
+                    }
+                }
+            }
         });
     </script>
 }

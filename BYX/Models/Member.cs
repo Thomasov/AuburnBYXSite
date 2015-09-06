@@ -16,6 +16,7 @@ namespace BYX.Models
     {
         public Member()
         {
+            this.Admins = new HashSet<Admin>();
             this.AttendanceRecords = new HashSet<AttendanceRecord>();
         }
     
@@ -28,6 +29,7 @@ namespace BYX.Models
         public bool Deleted { get; set; }
         public Nullable<long> Member_IgnitedNum { get; set; }
     
+        public virtual ICollection<Admin> Admins { get; set; }
         public virtual ICollection<AttendanceRecord> AttendanceRecords { get; set; }
         public virtual MemberType MemberType { get; set; }
     }

@@ -5,6 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AuburnBYXDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdminRoles">
+          <Key>
+            <PropertyRef Name="Role_ID" />
+          </Key>
+          <Property Name="Role_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Role_Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Admins">
+          <Key>
+            <PropertyRef Name="Admin_ID" />
+          </Key>
+          <Property Name="Admin_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Member_ID" Type="int" Nullable="false" />
+          <Property Name="Role_ID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="AttendanceRecords">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -53,6 +68,30 @@
           <Property Name="MemberType_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MemberType_Name" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Admins_AdminRoles">
+          <End Role="AdminRoles" Type="Self.AdminRoles" Multiplicity="1" />
+          <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminRoles">
+              <PropertyRef Name="Role_ID" />
+            </Principal>
+            <Dependent Role="Admins">
+              <PropertyRef Name="Role_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Admins_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="Admins" Type="Self.Admins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Member_ID" />
+            </Principal>
+            <Dependent Role="Admins">
+              <PropertyRef Name="Member_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AttendanceRecords_BYXEvents">
           <End Role="BYXEvents" Type="Self.BYXEvents" Multiplicity="1" />
           <End Role="AttendanceRecords" Type="Self.AttendanceRecords" Multiplicity="*" />
@@ -105,11 +144,21 @@
           <Parameter Name="p_EventID" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="AuburnBYXDBModelStoreContainer">
+          <EntitySet Name="AdminRoles" EntityType="Self.AdminRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AttendanceRecords" EntityType="Self.AttendanceRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BYXEvents" EntityType="Self.BYXEvents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventTypes" EntityType="Self.EventTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MemberTypes" EntityType="Self.MemberTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Admins_AdminRoles" Association="Self.FK_Admins_AdminRoles">
+            <End Role="AdminRoles" EntitySet="AdminRoles" />
+            <End Role="Admins" EntitySet="Admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Admins_Members" Association="Self.FK_Admins_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Admins" EntitySet="Admins" />
+          </AssociationSet>
           <AssociationSet Name="FK_AttendanceRecords_BYXEvents" Association="Self.FK_AttendanceRecords_BYXEvents">
             <End Role="BYXEvents" EntitySet="BYXEvents" />
             <End Role="AttendanceRecords" EntitySet="AttendanceRecords" />
@@ -135,11 +184,21 @@
           <FunctionImport Name="sp_EventAttendanceRecord" ReturnType="Collection(AuburnBYXDBModel.sp_EventAttendanceRecord_Result)">
           <Parameter Name="p_EventID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="AdminRoles" EntityType="AuburnBYXDBModel.AdminRole" />
+          <EntitySet Name="Admins" EntityType="AuburnBYXDBModel.Admin" />
           <EntitySet Name="AttendanceRecords" EntityType="AuburnBYXDBModel.AttendanceRecord" />
           <EntitySet Name="BYXEvents" EntityType="AuburnBYXDBModel.BYXEvent" />
           <EntitySet Name="EventTypes" EntityType="AuburnBYXDBModel.EventType" />
           <EntitySet Name="Members" EntityType="AuburnBYXDBModel.Member" />
           <EntitySet Name="MemberTypes" EntityType="AuburnBYXDBModel.MemberType" />
+          <AssociationSet Name="FK_Admins_AdminRoles" Association="AuburnBYXDBModel.FK_Admins_AdminRoles">
+            <End Role="AdminRole" EntitySet="AdminRoles" />
+            <End Role="Admin" EntitySet="Admins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Admins_Members" Association="AuburnBYXDBModel.FK_Admins_Members">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Admin" EntitySet="Admins" />
+          </AssociationSet>
           <AssociationSet Name="FK_AttendanceRecords_BYXEvents" Association="AuburnBYXDBModel.FK_AttendanceRecords_BYXEvents">
             <End Role="BYXEvent" EntitySet="BYXEvents" />
             <End Role="AttendanceRecord" EntitySet="AttendanceRecords" />
@@ -156,12 +215,31 @@
             <End Role="MemberType" EntitySet="MemberTypes" />
             <End Role="Member" EntitySet="Members" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_EventAttendanceRecord_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="101" />
           <Property Type="String" Name="Attended" Nullable="true" MaxLength="8" />
           <Property Type="Int32" Name="Member_ID" Nullable="false" />
+          <Property Type="DateTime" Name="SwipeTime" Nullable="true" Precision="23" />
         </ComplexType>
+        <EntityType Name="AdminRole">
+          <Key>
+            <PropertyRef Name="Role_ID" />
+          </Key>
+          <Property Name="Role_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Role_Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Admins" Relationship="AuburnBYXDBModel.FK_Admins_AdminRoles" FromRole="AdminRole" ToRole="Admin" />
+        </EntityType>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="Admin_ID" />
+          </Key>
+          <Property Name="Admin_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Member_ID" Type="Int32" Nullable="false" />
+          <Property Name="Role_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AdminRole" Relationship="AuburnBYXDBModel.FK_Admins_AdminRoles" FromRole="Admin" ToRole="AdminRole" />
+          <NavigationProperty Name="Member" Relationship="AuburnBYXDBModel.FK_Admins_Members" FromRole="Admin" ToRole="Member" />
+        </EntityType>
         <EntityType Name="AttendanceRecord">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -207,6 +285,7 @@
           <Property Name="MemberType_ID" Type="Int32" Nullable="false" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="Member_IgnitedNum" Type="Int64" />
+          <NavigationProperty Name="Admins" Relationship="AuburnBYXDBModel.FK_Admins_Members" FromRole="Member" ToRole="Admin" />
           <NavigationProperty Name="AttendanceRecords" Relationship="AuburnBYXDBModel.FK_AttendanceRecords_Members" FromRole="Member" ToRole="AttendanceRecord" />
           <NavigationProperty Name="MemberType" Relationship="AuburnBYXDBModel.FK_Members_MemberTypes" FromRole="Member" ToRole="MemberType" />
         </EntityType>
@@ -218,6 +297,30 @@
           <Property Name="MemberType_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Members" Relationship="AuburnBYXDBModel.FK_Members_MemberTypes" FromRole="MemberType" ToRole="Member" />
         </EntityType>
+        <Association Name="FK_Admins_AdminRoles">
+          <End Type="AuburnBYXDBModel.AdminRole" Role="AdminRole" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.Admin" Role="Admin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AdminRole">
+              <PropertyRef Name="Role_ID" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="Role_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Admins_Members">
+          <End Type="AuburnBYXDBModel.Member" Role="Member" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.Admin" Role="Admin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Member_ID" />
+            </Principal>
+            <Dependent Role="Admin">
+              <PropertyRef Name="Member_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AttendanceRecords_BYXEvents">
           <End Type="AuburnBYXDBModel.BYXEvent" Role="BYXEvent" Multiplicity="1" />
           <End Type="AuburnBYXDBModel.AttendanceRecord" Role="AttendanceRecord" Multiplicity="*" />
@@ -266,7 +369,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -278,9 +381,27 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Attended" ColumnName="Attended" />
                 <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
+                <ScalarProperty Name="SwipeTime" ColumnName="SwipeTime" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="AdminRoles">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.AdminRole">
+              <MappingFragment StoreEntitySet="AdminRoles">
+                <ScalarProperty Name="Role_Name" ColumnName="Role_Name" />
+                <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.Admin">
+              <MappingFragment StoreEntitySet="Admins">
+                <ScalarProperty Name="Role_ID" ColumnName="Role_ID" />
+                <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
+                <ScalarProperty Name="Admin_ID" ColumnName="Admin_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AttendanceRecords">
             <EntityTypeMapping TypeName="AuburnBYXDBModel.AttendanceRecord">
               <MappingFragment StoreEntitySet="AttendanceRecords">
@@ -333,7 +454,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

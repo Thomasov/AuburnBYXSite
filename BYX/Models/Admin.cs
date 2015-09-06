@@ -10,12 +10,15 @@
 namespace BYX.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_EventAttendanceRecord_Result
+    public partial class Admin
     {
-        public string Name { get; set; }
-        public string Attended { get; set; }
+        public int Admin_ID { get; set; }
         public int Member_ID { get; set; }
-        public Nullable<System.DateTime> SwipeTime { get; set; }
+        public int Role_ID { get; set; }
+    
+        public virtual AdminRole AdminRole { get; set; }
+        public virtual Member Member { get; set; }
     }
 }

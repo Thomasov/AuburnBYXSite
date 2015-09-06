@@ -27,6 +27,8 @@ namespace BYX.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AdminRole> AdminRoles { get; set; }
+        public virtual DbSet<Admin> Admins { get; set; }
         public virtual DbSet<AttendanceRecord> AttendanceRecords { get; set; }
         public virtual DbSet<BYXEvent> BYXEvents { get; set; }
         public virtual DbSet<EventType> EventTypes { get; set; }

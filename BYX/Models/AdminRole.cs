@@ -10,12 +10,18 @@
 namespace BYX.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_EventAttendanceRecord_Result
+    public partial class AdminRole
     {
-        public string Name { get; set; }
-        public string Attended { get; set; }
-        public int Member_ID { get; set; }
-        public Nullable<System.DateTime> SwipeTime { get; set; }
+        public AdminRole()
+        {
+            this.Admins = new HashSet<Admin>();
+        }
+    
+        public int Role_ID { get; set; }
+        public string Role_Name { get; set; }
+    
+        public virtual ICollection<Admin> Admins { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using BYX.Models;
 using BYX.Utilities;
 using System.Net.Mail;
+using System.Data.Entity;
 
 namespace BYX.Controllers
 {
@@ -153,6 +154,73 @@ namespace BYX.Controllers
         public ActionResult Edit()
         {
             return View();
+        }
+
+        public ActionResult ChangeAttendance(int eventID, int memberID, string attendanceType)
+        {
+            Member member = db.Members.Find(memberID);
+            BYXEvent byxEvent = db.BYXEvents.Find(eventID);
+
+            if (member == null || byxEvent == null)
+            {
+                return Json(new {
+                    success = false
+                });
+            }
+            AttendanceRecord record = db.AttendanceRecords.SingleOrDefault(f => f.Event_ID == eventID && f.Member_ID == memberID);
+            switch (attendanceType)
+            {
+                default:
+                case "Excused":
+                case "Attended":
+                    if (record != null) {
+                        db.Entry(record).State = EntityState.Modified;
+                        record.isExcusedAbsence = (attendanceType == "Excused") ? true : false;
+                        record.SwipeTime = byxEvent.Event_StartDateTime;
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception)
+                        {
+                            return Json(new
+                            {
+                                success = false,
+                                errormessage = "Something went wrong. Sorry :("
+                            });
+                        }
+                    }
+                    else
+                    {
+                        record = new AttendanceRecord();
+                        record.SwipeTime = byxEvent.Event_StartDateTime;
+                        record.Member_ID = memberID;
+                        record.Event_ID = eventID;
+                        record.isExcusedAbsence = (attendanceType == "Excused") ? true : false;
+                        db.AttendanceRecords.Add(record);
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception)
+                        {
+                            return Json(new
+                            {
+                                success = false,
+                                errormessage = "Something went wrong. Sorry :("
+                            });
+                        }
+                    }
+                    break;
+                case "Late":
+                    break;
+                case "Absent":
+                    break;
+            }
+
+            return Json(new { 
+                success = true
+            });
         }
 
         private List<BYXEvent> getTodaysEvents() 
