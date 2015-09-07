@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-4 col-sm-12">
+            <h2>Login</h2>
+            @if (ViewBag.BannerID != null)
+            {
+                <div class="alert alert-danger" role="alert">@ViewBag.BannerID was not found. Make sure you entered it correctly.</div>
+            }
+            <label for="bannerID">Banner ID</label>
+            <div class="input-group">
+                <div class="input-group-addon"><i class="icon-user"><span class="glyphicon glyphicon-user"></span></i></div>
+                <input type="text" name="bannerID" id="bannerID" class="form-control" placeholder="Banner ID Number" value="@ViewBag.BannerID" />
+            </div>
+            @*<label for="password">Password</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="icon-user"><span class="glyphicon glyphicon-lock"></span></i></div>
+                    <input type="text" name="password" id="password" class="form-control" placeholder="Password"/>
+                </div>*@
+            <input type="submit" class="btn btn-primary" value="Login" />
+        </div>
+    </div>
+}
+@section head {
+    <style type="text/css">
+        .input-group {
+            margin-bottom: 20px;
+        }
+    </style>
+}
+

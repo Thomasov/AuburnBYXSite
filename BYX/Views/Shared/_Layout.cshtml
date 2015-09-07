@@ -1,26 +1,42 @@
-﻿<!DOCTYPE html>
+﻿@using BYX.Utilities;
+<!DOCTYPE html>
 <html>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-xs-12" id="banner">
-                <img src="@Url.Content("~/Content/images/Crest.jpg")" class="crest">
-                <h1 id="page-header">Auburn Byx</h1>
+    <div class="container" id="content-container">
+        <div id="header">
+            <div class="row">
+                <div class="col-lg-12 col-xs-12" id="banner">
+                    <img src="@Url.Content("~/Content/images/Crest.jpg")" class="crest">
+                    <h1 id="page-header">Auburn Byx</h1>
+                </div>
+            </div>
+            <div class="row nav-row">
+                <div class="col-lg-12 col-xs-12">
+                    <nav>
+                        <ul class="nav nav-pills">
+                            <li role="presentation">@Html.ActionLink("Home", "Index", "Home")</li>
+                            @if (BYXAuth.IsFullAdmin())
+                            {
+                                <li role="presentation">@Html.ActionLink("Admin Tools", "Index", "Admin")</li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
-        <div class="row nav-row">
-            <div class="col-lg-12 col-xs-12">
-                <nav>
-                    <ul class="nav nav-pills">
-                        <li role="presentation">@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li role="presentation">@Html.ActionLink("Admin Tools", "Index", "Admin")</li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
-        <div class="container body-content">
+        <div class="container" id="body-content">
             @RenderBody()
+        </div>
+        <div id="footer">
+            <hr />
+            @if (BYXAuth.isLoggedIn())
+            {
+                <span>@Html.ActionLink("Logout", "Logout", "Admin")</span>
+            }
+            else
+            {
+                <span>@Html.ActionLink("Login", "Login", "Admin")</span>
+            }
         </div>
     </div>
 </body>
@@ -36,7 +52,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        $(function(){
+        $(function () {
             var numNavItems = $('.nav li').length;
             $('.nav li').each(function () {
                 $(this).css('width', 100 / numNavItems + "%");

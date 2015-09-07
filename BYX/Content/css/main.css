@@ -1,5 +1,8 @@
-body {
+html,body {
 	font-family: "Lato",Arial,sans-serif;
+    	margin:0;
+	padding:0;
+	height:100%;
 }
 h1, h2, h3, h4 {
 	color: #4F2E7F;
@@ -10,6 +13,10 @@ a {
 }
 .form-control {
     margin-bottom: 20px;
+}
+.btn-primary {
+    background-color:#4F2E7F;
+    border-color:#371F5A;
 }
 .nav-pills > li + li {
     margin-left: 0;
@@ -48,9 +55,6 @@ ul li {
 	padding:10px 0px 10px 10px;
 	/*text-align: center;*/
 }
-.header-block .col-lg-6 {
-	border-right: 
-}
 .header-block h2, .header-block h3{
 	color: #FFF;
 }
@@ -59,8 +63,25 @@ hr {
 	background-color: rgba(140, 115, 178, .2);
 	color: rgba(140, 115, 178, .3);
 }
-.validation-summary-valid  {
+.validation-summary-valid {
     display: none;
+}
+#content-container {
+	min-height:100%;
+	position:relative;
+}
+#header {
+	padding:10px;
+}
+#body-content {
+	padding-bottom:75px; /* Height of the footer element */
+}
+#footer {
+	width:100%;
+	height:75px;
+	position:absolute;
+	bottom:0;
+	left:0;
 }
 @media (min-width:320px) { 
 	#page-header {

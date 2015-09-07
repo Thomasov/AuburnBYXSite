@@ -10,7 +10,7 @@ using BYX.Models;
 
 namespace BYX.Controllers
 {
-    public class MemberController : Controller
+    public class MembersController : Controller
     {
         private AuburnBYXDBEntities db = new AuburnBYXDBEntities();
 
