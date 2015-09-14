@@ -260,6 +260,8 @@
     <Content Include="Views\Admin\CreateAdmin.cshtml" />
     <Content Include="Views\Error\Unauthorized.cshtml" />
     <Content Include="Views\Admin\Login.cshtml" />
+    <Content Include="Views\Home\ChapterDress.cshtml" />
+    <Content Include="Views\Home\Resources.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
