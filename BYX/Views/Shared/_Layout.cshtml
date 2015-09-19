@@ -15,6 +15,7 @@
                     <nav>
                         <ul class="nav nav-pills">
                             <li role="presentation">@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li role="presentation">@Html.ActionLink("Resources", "Resources", "Home")</li>
                             @if (BYXAuth.IsFullAdmin())
                             {
                                 <li role="presentation">@Html.ActionLink("Admin Tools", "Index", "Admin")</li>
