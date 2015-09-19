@@ -143,6 +143,9 @@
         <Function Name="sp_EventAttendanceRecord" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="AuburnBYXUser">
           <Parameter Name="p_EventID" Type="int" Mode="In" />
         </Function>
+        <Function Name="sp_MemberAttendanceRecord" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="AuburnBYXUser">
+          <Parameter Name="p_Member_ID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="AuburnBYXDBModelStoreContainer">
           <EntitySet Name="AdminRoles" EntityType="Self.AdminRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
@@ -215,6 +218,9 @@
             <End Role="MemberType" EntitySet="MemberTypes" />
             <End Role="Member" EntitySet="Members" />
           </AssociationSet>
+          <FunctionImport Name="sp_MemberAttendanceRecord" ReturnType="Collection(AuburnBYXDBModel.sp_MemberAttendanceRecord_Result)">
+            <Parameter Name="p_Member_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="sp_EventAttendanceRecord_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="101" />
@@ -369,6 +375,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="sp_MemberAttendanceRecord_Result">
+          <Property Type="DateTime" Name="Event_StartDateTime" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Event_Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Attended" Nullable="true" MaxLength="8" />
+          <Property Type="Int32" Name="EventType_ID" Nullable="false" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -454,6 +466,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_MemberAttendanceRecord" FunctionName="AuburnBYXDBModel.Store.sp_MemberAttendanceRecord">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AuburnBYXDBModel.sp_MemberAttendanceRecord_Result">
+                <ScalarProperty Name="Event_StartDateTime" ColumnName="Event_StartDateTime" />
+                <ScalarProperty Name="Event_Name" ColumnName="Event_Name" />
+                <ScalarProperty Name="Attended" ColumnName="Attended" />
+                <ScalarProperty Name="EventType_ID" ColumnName="EventType_ID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

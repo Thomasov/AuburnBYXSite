@@ -10,7 +10,7 @@ using BYX.Models;
 
 namespace BYX.Controllers
 {
-    public class MembersController : Controller
+    public class MemberController : Controller
     {
         private AuburnBYXDBEntities db = new AuburnBYXDBEntities();
 
@@ -43,6 +43,20 @@ namespace BYX.Controllers
             }
             ViewBag.Attendance = outputs;
             ViewBag.TotalAbsences = outputs.Count(f => !f.Attended);
+            //var records = db.sp_MemberAttendanceRecord(id);
+            //int requiredRushEvents = records.Count(f => f.EventType_ID == 2);
+            //double absences = 0;
+            //foreach (var record in records)
+            //{
+            //    if (record.EventType_ID == 2)
+            //    {
+
+            //    }
+            //    else
+            //    {
+
+            //    }
+            //}
             return View(member);
         }
 

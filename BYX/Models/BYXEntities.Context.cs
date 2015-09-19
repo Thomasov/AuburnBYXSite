@@ -43,5 +43,14 @@ namespace BYX.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_EventAttendanceRecord_Result>("sp_EventAttendanceRecord", p_EventIDParameter);
         }
+    
+        public virtual ObjectResult<sp_MemberAttendanceRecord_Result> sp_MemberAttendanceRecord(Nullable<int> p_Member_ID)
+        {
+            var p_Member_IDParameter = p_Member_ID.HasValue ?
+                new ObjectParameter("p_Member_ID", p_Member_ID) :
+                new ObjectParameter("p_Member_ID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_MemberAttendanceRecord_Result>("sp_MemberAttendanceRecord", p_Member_IDParameter);
+        }
     }
 }
