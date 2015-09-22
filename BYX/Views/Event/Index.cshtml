@@ -1,14 +1,17 @@
 ﻿@model IEnumerable<BYX.Models.BYXEvent>
-
+@using BYX.Utilities;
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+@if (BYXAuth.IsAdmin())
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -20,7 +23,9 @@
         <th>
             @Html.DisplayNameFor(model => model.EventType.EventType_Name)
         </th>
-        <th></th>
+        @if (BYXAuth.IsAdmin())
+        {
+        <th></th> }
     </tr>
 
     @foreach (var item in Model)
@@ -35,11 +40,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EventType.EventType_Name)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Event_ID }) |
-                <a class="btn-delete" id="@item.Event_ID" href="#">Delete</a>
-                @*@Html.ActionLink("Delete", "Delete", new { id = item.Event_ID }, new { @class = "btn btn-default btn-delete", id=item.Event_ID })*@
-            </td>
+            @if (BYXAuth.IsAdmin())
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Event_ID }) |
+                    <a class="btn-delete" id="@item.Event_ID" href="#">Delete</a>
+                </td>
+            }
         </tr>
     }
 

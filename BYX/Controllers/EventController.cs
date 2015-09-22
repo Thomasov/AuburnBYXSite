@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BYX.Models;
+using BYX.Utilities;
 
 namespace BYX.Controllers
 {
@@ -14,13 +15,27 @@ namespace BYX.Controllers
     {
         private AuburnBYXDBEntities db = new AuburnBYXDBEntities();
 
-        // GET: /Event/
+        /// <summary>
+        /// Event List. Has different events based on authorization level.
+        /// </summary>
+        /// <returns></returns>
+        [BYXAuthorize]
         public ActionResult Index()
         {
-            var byxevents = db.BYXEvents.Where(f => !f.Deleted).Include(b => b.EventType);
+            IEnumerable<BYXEvent> byxevents;
+
+            if (BYXAuth.IsMemberOf("Cell Group Coordinator"))
+            {
+                byxevents = db.BYXEvents.Where(f => !f.Deleted && f.EventType.EventType_Name == "Cell Group").Include(b => b.EventType);
+            }
+            else
+            {
+                byxevents = db.BYXEvents.Where(f => !f.Deleted).Include(b => b.EventType);
+            }
             return View(byxevents.ToList());
         }
 
+        [BYXAuthorize("Admin")]
         // GET: /Event/Details/5
         public ActionResult Details(int? id)
         {
@@ -37,6 +52,7 @@ namespace BYX.Controllers
         }
 
         // GET: /Event/Create
+        [BYXAuthorize("Admin")]
         public ActionResult Create()
         {
             ViewBag.EventType_ID = new SelectList(db.EventTypes, "EventType_ID", "EventType_Name");
@@ -48,6 +64,7 @@ namespace BYX.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [BYXAuthorize("Admin")]
         public ActionResult Create(BYXEvent byxevent)
         {
             if (ModelState.IsValid)
@@ -64,6 +81,7 @@ namespace BYX.Controllers
         }
 
         // GET: /Event/Edit/5
+        [BYXAuthorize("Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,6 +103,7 @@ namespace BYX.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [BYXAuthorize("Admin")]
         public ActionResult Edit(BYXEvent byxevent)
         {
             if (ModelState.IsValid)
@@ -99,6 +118,7 @@ namespace BYX.Controllers
         }
 
         // GET: /Event/Delete/5
+        [BYXAuthorize("Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -115,6 +135,7 @@ namespace BYX.Controllers
 
         // POST: /Event/Delete/5
         [HttpPost]
+        [BYXAuthorize("Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             BYXEvent byxevent = db.BYXEvents.Find(id);

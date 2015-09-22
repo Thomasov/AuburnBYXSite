@@ -21,6 +21,7 @@ namespace BYX.Controllers
             return View();
         }
 
+        [BYXAuthorize("Admin")]
         public ActionResult Swipe(int? id) 
         {
             if (id == null) 
@@ -36,6 +37,7 @@ namespace BYX.Controllers
         }
 
         [HttpPost]
+        [BYXAuthorize("Admin")]
         public ActionResult SwipeCreate(string input, int eventID)
         {
             if (!String.IsNullOrEmpty(input))
@@ -127,12 +129,20 @@ namespace BYX.Controllers
             }
         }
 
+        [BYXAuthorize("Admin")]
         public ActionResult PickEvent()
         {
             ViewBag.Events = getTodaysEvents();
             return View();
         }
 
+        /// <summary>
+        /// List of everyone who attended a specific event. Authorized based on the type of event. 
+        /// There's also a way to change the attendance of a member for this event from this page.
+        /// </summary>
+        /// <param name="id">Event_ID</param>
+        /// <returns></returns>
+        [BYXAuthorize]
         public ActionResult EventReport(int? id)
         {
             if (id == null)
@@ -144,19 +154,28 @@ namespace BYX.Controllers
             {
                 return RedirectToAction("PageNotFound", "Error");
             }
-            
-            EventReportViewModel reportVM = new EventReportViewModel();
-            reportVM.eventReports = db.sp_EventAttendanceRecord(id).OrderBy(f => f.Name).ToList();
-            reportVM.Event = byxEvent;
-            return View(reportVM);
+            if ((byxEvent.EventType.EventType_Name == "Cell Group" && BYXAuth.IsMemberOf("Cell Group Coordinator")) || BYXAuth.IsAdmin())
+            {
+                EventReportViewModel reportVM = new EventReportViewModel();
+                reportVM.eventReports = db.sp_EventAttendanceRecord(id).OrderBy(f => f.Name).ToList();
+                reportVM.Event = byxEvent;
+                return View(reportVM);
+            }
+            else
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+
         }
 
+        [BYXAuthorize("Admin")]
         public ActionResult Edit()
         {
             return View();
         }
 
-        public ActionResult ChangeAttendance(int eventID, int memberID, string attendanceType)
+        [BYXAuthorize]
+        public JsonResult ChangeAttendance(int eventID, int memberID, string attendanceType)
         {
             Member member = db.Members.Find(memberID);
             BYXEvent byxEvent = db.BYXEvents.Find(eventID);

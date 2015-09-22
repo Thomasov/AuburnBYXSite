@@ -16,9 +16,13 @@
                         <ul class="nav nav-pills">
                             <li role="presentation">@Html.ActionLink("Home", "Index", "Home")</li>
                             <li role="presentation">@Html.ActionLink("Resources", "Resources", "Home")</li>
-                            @if (BYXAuth.IsFullAdmin())
+                            @if (BYXAuth.IsAdmin())
                             {
                                 <li role="presentation">@Html.ActionLink("Admin Tools", "Index", "Admin")</li>
+                            }
+                            else if (BYXAuth.IsMemberOf("Cell Group Coordinator"))
+                            {
+                                <li role="presentation">@Html.ActionLink("Cell Group Attendance", "Index", "Event")</li>
                             }
                         </ul>
                     </nav>
@@ -30,7 +34,7 @@
         </div>
         <div id="footer">
             <hr />
-            @if (BYXAuth.isLoggedIn())
+            @if (BYXAuth.IsLoggedIn())
             {
                 <span>@Html.ActionLink("Logout", "Logout", "Admin")</span>
             }

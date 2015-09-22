@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BYX.Models;
+using BYX.Utilities;
 
 namespace BYX.Controllers
 {
@@ -11,18 +12,20 @@ namespace BYX.Controllers
     {
         private AuburnBYXDBEntities db = new AuburnBYXDBEntities();
 
+        #region Static Pages
+        [BYXAuthorize("Admin")]
         public ActionResult Index()
         {
             return View();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+
+        [BYXAuthorize("Admin")]
         public ActionResult All()
         {
             return View(db.Admins);
         }
+        #endregion
+
         #region Login/Logout
         public ActionResult Login()
         {
@@ -74,6 +77,7 @@ namespace BYX.Controllers
         /// </summary>
         /// <param name="id">ID will be passed in for edit pages.</param>
         /// <returns>Partial View of a form.</returns>
+        [BYXAuthorize("Admin")]
         public ActionResult ManageAdmin(int? id)
         {
             return PartialView();
@@ -85,6 +89,7 @@ namespace BYX.Controllers
         /// <param name="id">Admin_ID of the admin to edit.</param>
         /// <returns>Html page for editing an admin.</returns>
         [HttpGet]
+        [BYXAuthorize("Admin")]
         public ActionResult EditAdmin(int id)
         {
             Admin admin = db.Admins.Find(id);
@@ -108,6 +113,7 @@ namespace BYX.Controllers
         /// <param name="admin">The EF Object of the admin to be edited.</param>
         /// <returns>Either an error view (unlikely) or redirect to Admin/All page.</returns>
         [HttpPost]
+        [BYXAuthorize("Admin")]
         public ActionResult EditAdmin(Admin admin)
         {
             if (ModelState.IsValid)
@@ -131,6 +137,7 @@ namespace BYX.Controllers
         /// </summary>
         /// <returns>Html page with a blank form to create a new admin with.</returns>
         [HttpGet]
+        [BYXAuthorize("Admin")]
         public ActionResult CreateAdmin()
         {
             Admin admin = new Admin();
@@ -150,6 +157,7 @@ namespace BYX.Controllers
         /// <param name="admin">EF Object of the new admin to be added to the database.</param>
         /// <returns>Redirect to home page (or possibly spit back to this page if error)</returns>
         [HttpPost]
+        [BYXAuthorize("Admin")]
         public ActionResult CreateAdmin(Admin admin)
         {
 

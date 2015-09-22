@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BYX.Models;
+using BYX.Utilities;
 
 namespace BYX.Controllers
 {
@@ -15,6 +16,7 @@ namespace BYX.Controllers
         private AuburnBYXDBEntities db = new AuburnBYXDBEntities();
 
         // GET: /Member/
+        [BYXAuthorize("Admin")]
         public ActionResult Index()
         {
             var members = db.Members.Include(m => m.MemberType);
@@ -22,6 +24,7 @@ namespace BYX.Controllers
         }
 
         // GET: /Member/Details/5
+        [BYXAuthorize("Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -61,6 +64,7 @@ namespace BYX.Controllers
         }
 
         // GET: /Member/Create
+        [BYXAuthorize("Admin")]
         public ActionResult Create()
         {
             ViewBag.MemberType_ID = new SelectList(db.MemberTypes, "MemberType_ID", "MemberType_Name");
@@ -72,6 +76,7 @@ namespace BYX.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [BYXAuthorize("Admin")]
         public ActionResult Create(Member member)
         {
             if (ModelState.IsValid)
@@ -87,6 +92,7 @@ namespace BYX.Controllers
         }
 
         // GET: /Member/Edit/5
+        [BYXAuthorize("Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -108,7 +114,8 @@ namespace BYX.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="Member_ID,Member_FirstName,Member_LastName,Member_EmailAddress,Member_BannerID,MemberType_ID,Deleted,Member_IgnitedNum")] Member member)
+        [BYXAuthorize("Admin")]
+        public ActionResult Edit(Member member)
         {
             if (ModelState.IsValid)
             {
@@ -121,6 +128,7 @@ namespace BYX.Controllers
         }
 
         // GET: /Member/Delete/5
+        [BYXAuthorize("Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -138,6 +146,7 @@ namespace BYX.Controllers
         // POST: /Member/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [BYXAuthorize("Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Member member = db.Members.Find(id);
