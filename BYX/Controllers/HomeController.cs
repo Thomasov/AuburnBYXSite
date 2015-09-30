@@ -26,6 +26,7 @@ namespace BYX.Controllers
 			return View(db.Members.Where(f => !f.Deleted).ToList());
 		}
 
+
 		[HttpGet]
 		public ActionResult GetName(string input)
 		{
@@ -43,6 +44,11 @@ namespace BYX.Controllers
         }
 
         public ActionResult ChapterDress()
+        {
+            return View();
+        }
+
+        public ActionResult BlockSeating()
         {
             return View();
         }

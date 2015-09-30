@@ -265,6 +265,7 @@
     <Content Include="Views\Admin\Login.cshtml" />
     <Content Include="Views\Home\ChapterDress.cshtml" />
     <Content Include="Views\Home\Resources.cshtml" />
+    <Content Include="Views\Home\BlockSeating.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
