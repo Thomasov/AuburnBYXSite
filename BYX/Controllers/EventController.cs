@@ -32,7 +32,7 @@ namespace BYX.Controllers
             {
                 byxevents = db.BYXEvents.Where(f => !f.Deleted).Include(b => b.EventType);
             }
-            return View(byxevents.ToList());
+            return View(byxevents.OrderByDescending(f => f.Event_StartDateTime).ToList());
         }
 
         [BYXAuthorize("Admin")]

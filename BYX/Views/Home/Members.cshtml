@@ -6,7 +6,7 @@
 
 <h2>Members</h2>
 
-<table class="table">
+<table class="table" id="members">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Member_FirstName)
@@ -46,3 +46,13 @@
 }
 
 </table>
+
+@section head {
+<link href="@Url.Content("~/Content/css/datatables.min.css")" rel="stylesheet" />
+<script src="@Url.Content("~/Content/js/datatables.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#members').DataTable();
+        });
+    </script>
+}

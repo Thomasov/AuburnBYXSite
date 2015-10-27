@@ -12,50 +12,58 @@
     </p>
 }
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Event_Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Event_StartDateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EventType.EventType_Name)
-        </th>
-        @if (BYXAuth.IsAdmin())
-        {
-        <th></th> }
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr id="row-@item.Event_ID">
-            <td id="name-@item.Event_ID">
-                @Html.ActionLink(item.Event_Name, "EventReport", "Attendance", new { id = item.Event_ID }, null)
-            </td>
-            <td>
-                @item.Event_StartDateTime.ToLocalTime().ToString("MMM dd yyyy a't' h:mm tt")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventType.EventType_Name)
-            </td>
+<table class="table" id="events">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Event_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Event_StartDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventType.EventType_Name)
+            </th>
             @if (BYXAuth.IsAdmin())
             {
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Event_ID }) |
-                    <a class="btn-delete" id="@item.Event_ID" href="#">Delete</a>
-                </td>
-            }
+                <th></th> }
         </tr>
-    }
-
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr id="row-@item.Event_ID">
+                <td id="name-@item.Event_ID">
+                    @Html.ActionLink(item.Event_Name, "EventReport", "Attendance", new { id = item.Event_ID }, null)
+                </td>
+                <td>
+                    @item.Event_StartDateTime.ToLocalTime().ToString("MMM dd yyyy a't' h:mm tt")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventType.EventType_Name)
+                </td>
+                @if (BYXAuth.IsAdmin())
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Event_ID }) |
+                        <a class="btn-delete" id="@item.Event_ID" href="#">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
 </table>
 @section head {
     <link href="@Url.Content("~/Content/css/bootstrap-dialog.css")" rel="stylesheet" />
     <script src="@Url.Content("~/Content/js/bootstrap-dialog.js")"></script>
+    <link href="@Url.Content("~/Content/css/datatables.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/js/datatables.js")"></script>
     <script type="text/javascript">
         $(function () {
+
+            $('#events').DataTable({
+                sorting: false
+            });
             $('.btn-delete').click(function () {
                 var id = $(this).attr('id');
                 BootstrapDialog.show({

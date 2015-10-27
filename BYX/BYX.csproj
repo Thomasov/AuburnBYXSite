@@ -136,10 +136,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap-dialog.css" />
+    <Content Include="Content\css\datatables.min.css" />
     <Content Include="Content\css\Details.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\images\Crest.jpg" />
     <Content Include="Content\js\bootstrap-dialog.js" />
+    <Content Include="Content\js\datatables.js" />
     <Content Include="Global.asax" />
     <EntityDeploy Include="Models\BYXEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
