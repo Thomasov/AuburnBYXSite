@@ -38,6 +38,11 @@ namespace BYX.Controllers
 			}, JsonRequestBehavior.AllowGet);
 		}
 
+        public ActionResult Register()
+        {
+            return View(new NonMember());
+        }
+
         public ActionResult Resources()
         {
             return View();

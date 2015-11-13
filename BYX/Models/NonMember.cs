@@ -12,29 +12,21 @@ namespace BYX.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Member
+    public partial class NonMember
     {
-        public Member()
+        public NonMember()
         {
-            this.Admins = new HashSet<Admin>();
-            this.AttendanceRecords = new HashSet<AttendanceRecord>();
             this.Guardians = new HashSet<Guardian>();
             this.Potentials = new HashSet<Potential>();
         }
     
-        public int Member_ID { get; set; }
-        public string Member_FirstName { get; set; }
-        public string Member_LastName { get; set; }
-        public string Member_EmailAddress { get; set; }
-        public long Member_BannerID { get; set; }
-        public int MemberType_ID { get; set; }
-        public bool Deleted { get; set; }
-        public Nullable<long> Member_IgnitedNum { get; set; }
+        public int NonMember_ID { get; set; }
+        public string NonMember_FirstName { get; set; }
+        public string NonMember_LastName { get; set; }
+        public string NonMember_EmailAddress { get; set; }
+        public bool Archived { get; set; }
     
-        public virtual ICollection<Admin> Admins { get; set; }
-        public virtual ICollection<AttendanceRecord> AttendanceRecords { get; set; }
         public virtual ICollection<Guardian> Guardians { get; set; }
-        public virtual MemberType MemberType { get; set; }
         public virtual ICollection<Potential> Potentials { get; set; }
     }
 }

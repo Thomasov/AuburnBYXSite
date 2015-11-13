@@ -55,6 +55,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization">
       <Private>True</Private>
     </Reference>
@@ -139,9 +143,12 @@
     <Content Include="Content\css\datatables.min.css" />
     <Content Include="Content\css\Details.css" />
     <Content Include="Content\css\main.css" />
+    <Content Include="Content\css\Register.css" />
     <Content Include="Content\images\Crest.jpg" />
     <Content Include="Content\js\bootstrap-dialog.js" />
     <Content Include="Content\js\datatables.js" />
+    <Content Include="Content\js\knockout.js" />
+    <Content Include="Content\js\ViewModels\RegisterViewModel.js" />
     <Content Include="Global.asax" />
     <EntityDeploy Include="Models\BYXEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -189,6 +196,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JsonController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -225,11 +233,24 @@
     <Compile Include="Models\EventType.cs">
       <DependentUpon>BYXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Guardian.cs">
+      <DependentUpon>BYXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GuardianType.cs">
+      <DependentUpon>BYXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Member.cs">
       <DependentUpon>BYXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MemberMetaData.cs" />
     <Compile Include="Models\MemberType.cs">
+      <DependentUpon>BYXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NonMember.cs">
+      <DependentUpon>BYXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PartialClasses\_NonMember.cs" />
+    <Compile Include="Models\Potential.cs">
       <DependentUpon>BYXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_EventAttendanceRecord_Result.cs">
@@ -268,6 +289,7 @@
     <Content Include="Views\Home\ChapterDress.cshtml" />
     <Content Include="Views\Home\Resources.cshtml" />
     <Content Include="Views\Home\BlockSeating.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -277,6 +299,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\js\Objects\" />
+    <Folder Include="Views\Json\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -64,21 +64,11 @@ namespace BYX.Utilities
         }
 
         /// <summary>
-        /// overloaded method to make checking if a user is part of a role easier.
-        /// </summary>
-        /// <param name="role">Role you want to figure out if the logged in user is a part of.</param>
-        /// <returns>True if the user is a member of that role.</returns>
-        public static bool IsMemberOf(string role)
-        {
-            return IsMemberOf(new string[] { role });
-        }
-
-        /// <summary>
         /// Determines if the currently logged in user is part of any of the given roles.
         /// </summary>
         /// <param name="roles"></param>
         /// <returns></returns>
-        public static bool IsMemberOf(string[] roles)
+        public static bool IsMemberOf(params string[] roles)
         {
             using (AuburnBYXDBEntities db = new AuburnBYXDBEntities())
             {

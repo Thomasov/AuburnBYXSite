@@ -48,6 +48,22 @@
           <Property Name="EventType_Weight" Type="int" Nullable="false" />
           <Property Name="EventType_Name" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Guardians">
+          <Key>
+            <PropertyRef Name="Guardian_ID" />
+          </Key>
+          <Property Name="Guardian_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NonMember_ID" Type="int" Nullable="false" />
+          <Property Name="GuardianOf" Type="int" Nullable="false" />
+          <Property Name="GuardianType_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GuardianTypes">
+          <Key>
+            <PropertyRef Name="GuardianType_ID" />
+          </Key>
+          <Property Name="GuardianType_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GuardianType_Label" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Members">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -67,6 +83,26 @@
           </Key>
           <Property Name="MemberType_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MemberType_Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NonMembers">
+          <Key>
+            <PropertyRef Name="NonMember_ID" />
+          </Key>
+          <Property Name="NonMember_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NonMember_FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NonMember_LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NonMember_EmailAddress" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Archived" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Potentials">
+          <Key>
+            <PropertyRef Name="Potential_ID" />
+          </Key>
+          <Property Name="Potential_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NonMember_ID" Type="int" Nullable="false" />
+          <Property Name="SemesterSignedUp" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="ReferredBy" Type="int" />
+          <Property Name="Archived" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Admins_AdminRoles">
           <End Role="AdminRoles" Type="Self.AdminRoles" Multiplicity="1" />
@@ -128,6 +164,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Guardians_GuardianTypes">
+          <End Role="GuardianTypes" Type="Self.GuardianTypes" Multiplicity="1" />
+          <End Role="Guardians" Type="Self.Guardians" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="GuardianTypes">
+              <PropertyRef Name="GuardianType_ID" />
+            </Principal>
+            <Dependent Role="Guardians">
+              <PropertyRef Name="Guardian_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Guardians_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="Guardians" Type="Self.Guardians" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Member_ID" />
+            </Principal>
+            <Dependent Role="Guardians">
+              <PropertyRef Name="GuardianOf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Guardians_NonMembers">
+          <End Role="NonMembers" Type="Self.NonMembers" Multiplicity="1" />
+          <End Role="Guardians" Type="Self.Guardians" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NonMembers">
+              <PropertyRef Name="NonMember_ID" />
+            </Principal>
+            <Dependent Role="Guardians">
+              <PropertyRef Name="NonMember_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Members_MemberTypes">
           <End Role="MemberTypes" Type="Self.MemberTypes" Multiplicity="1" />
           <End Role="Members" Type="Self.Members" Multiplicity="*" />
@@ -137,6 +209,30 @@
             </Principal>
             <Dependent Role="Members">
               <PropertyRef Name="MemberType_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Potentials_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="0..1" />
+          <End Role="Potentials" Type="Self.Potentials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="Member_ID" />
+            </Principal>
+            <Dependent Role="Potentials">
+              <PropertyRef Name="ReferredBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Potentials_NonMembers">
+          <End Role="NonMembers" Type="Self.NonMembers" Multiplicity="1" />
+          <End Role="Potentials" Type="Self.Potentials" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NonMembers">
+              <PropertyRef Name="NonMember_ID" />
+            </Principal>
+            <Dependent Role="Potentials">
+              <PropertyRef Name="NonMember_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -152,8 +248,12 @@
           <EntitySet Name="AttendanceRecords" EntityType="Self.AttendanceRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BYXEvents" EntityType="Self.BYXEvents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventTypes" EntityType="Self.EventTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Guardians" EntityType="Self.Guardians" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GuardianTypes" EntityType="Self.GuardianTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MemberTypes" EntityType="Self.MemberTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NonMembers" EntityType="Self.NonMembers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Potentials" EntityType="Self.Potentials" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Admins_AdminRoles" Association="Self.FK_Admins_AdminRoles">
             <End Role="AdminRoles" EntitySet="AdminRoles" />
             <End Role="Admins" EntitySet="Admins" />
@@ -174,9 +274,29 @@
             <End Role="EventTypes" EntitySet="EventTypes" />
             <End Role="BYXEvents" EntitySet="BYXEvents" />
           </AssociationSet>
+          <AssociationSet Name="FK_Guardians_GuardianTypes" Association="Self.FK_Guardians_GuardianTypes">
+            <End Role="GuardianTypes" EntitySet="GuardianTypes" />
+            <End Role="Guardians" EntitySet="Guardians" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Guardians_Members" Association="Self.FK_Guardians_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Guardians" EntitySet="Guardians" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Guardians_NonMembers" Association="Self.FK_Guardians_NonMembers">
+            <End Role="NonMembers" EntitySet="NonMembers" />
+            <End Role="Guardians" EntitySet="Guardians" />
+          </AssociationSet>
           <AssociationSet Name="FK_Members_MemberTypes" Association="Self.FK_Members_MemberTypes">
             <End Role="MemberTypes" EntitySet="MemberTypes" />
             <End Role="Members" EntitySet="Members" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Potentials_Members" Association="Self.FK_Potentials_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Potentials" EntitySet="Potentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Potentials_NonMembers" Association="Self.FK_Potentials_NonMembers">
+            <End Role="NonMembers" EntitySet="NonMembers" />
+            <End Role="Potentials" EntitySet="Potentials" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -187,13 +307,20 @@
           <FunctionImport Name="sp_EventAttendanceRecord" ReturnType="Collection(AuburnBYXDBModel.sp_EventAttendanceRecord_Result)">
           <Parameter Name="p_EventID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_MemberAttendanceRecord" ReturnType="Collection(AuburnBYXDBModel.sp_MemberAttendanceRecord_Result)">
+          <Parameter Name="p_Member_ID" Mode="In" Type="Int32" />
+          </FunctionImport>
           <EntitySet Name="AdminRoles" EntityType="AuburnBYXDBModel.AdminRole" />
           <EntitySet Name="Admins" EntityType="AuburnBYXDBModel.Admin" />
           <EntitySet Name="AttendanceRecords" EntityType="AuburnBYXDBModel.AttendanceRecord" />
           <EntitySet Name="BYXEvents" EntityType="AuburnBYXDBModel.BYXEvent" />
           <EntitySet Name="EventTypes" EntityType="AuburnBYXDBModel.EventType" />
+          <EntitySet Name="Guardians" EntityType="AuburnBYXDBModel.Guardian" />
+          <EntitySet Name="GuardianTypes" EntityType="AuburnBYXDBModel.GuardianType" />
           <EntitySet Name="Members" EntityType="AuburnBYXDBModel.Member" />
           <EntitySet Name="MemberTypes" EntityType="AuburnBYXDBModel.MemberType" />
+          <EntitySet Name="NonMembers" EntityType="AuburnBYXDBModel.NonMember" />
+          <EntitySet Name="Potentials" EntityType="AuburnBYXDBModel.Potential" />
           <AssociationSet Name="FK_Admins_AdminRoles" Association="AuburnBYXDBModel.FK_Admins_AdminRoles">
             <End Role="AdminRole" EntitySet="AdminRoles" />
             <End Role="Admin" EntitySet="Admins" />
@@ -214,19 +341,42 @@
             <End Role="EventType" EntitySet="EventTypes" />
             <End Role="BYXEvent" EntitySet="BYXEvents" />
           </AssociationSet>
+          <AssociationSet Name="FK_Guardians_GuardianTypes" Association="AuburnBYXDBModel.FK_Guardians_GuardianTypes">
+            <End Role="GuardianType" EntitySet="GuardianTypes" />
+            <End Role="Guardian" EntitySet="Guardians" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Guardians_Members" Association="AuburnBYXDBModel.FK_Guardians_Members">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Guardian" EntitySet="Guardians" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Guardians_NonMembers" Association="AuburnBYXDBModel.FK_Guardians_NonMembers">
+            <End Role="NonMember" EntitySet="NonMembers" />
+            <End Role="Guardian" EntitySet="Guardians" />
+          </AssociationSet>
           <AssociationSet Name="FK_Members_MemberTypes" Association="AuburnBYXDBModel.FK_Members_MemberTypes">
             <End Role="MemberType" EntitySet="MemberTypes" />
             <End Role="Member" EntitySet="Members" />
           </AssociationSet>
-          <FunctionImport Name="sp_MemberAttendanceRecord" ReturnType="Collection(AuburnBYXDBModel.sp_MemberAttendanceRecord_Result)">
-            <Parameter Name="p_Member_ID" Mode="In" Type="Int32" />
-          </FunctionImport>
+          <AssociationSet Name="FK_Potentials_Members" Association="AuburnBYXDBModel.FK_Potentials_Members">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="Potential" EntitySet="Potentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Potentials_NonMembers" Association="AuburnBYXDBModel.FK_Potentials_NonMembers">
+            <End Role="NonMember" EntitySet="NonMembers" />
+            <End Role="Potential" EntitySet="Potentials" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_EventAttendanceRecord_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="101" />
           <Property Type="String" Name="Attended" Nullable="true" MaxLength="8" />
           <Property Type="Int32" Name="Member_ID" Nullable="false" />
           <Property Type="DateTime" Name="SwipeTime" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="sp_MemberAttendanceRecord_Result">
+          <Property Type="DateTime" Name="Event_StartDateTime" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Event_Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Attended" Nullable="true" MaxLength="8" />
+          <Property Type="Int32" Name="EventType_ID" Nullable="false" />
         </ComplexType>
         <EntityType Name="AdminRole">
           <Key>
@@ -279,6 +429,26 @@
           <Property Name="EventType_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="BYXEvents" Relationship="AuburnBYXDBModel.FK_BYXEvents_EventTypes" FromRole="EventType" ToRole="BYXEvent" />
         </EntityType>
+        <EntityType Name="Guardian">
+          <Key>
+            <PropertyRef Name="Guardian_ID" />
+          </Key>
+          <Property Name="Guardian_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NonMember_ID" Type="Int32" Nullable="false" />
+          <Property Name="GuardianOf" Type="Int32" Nullable="false" />
+          <Property Name="GuardianType_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="GuardianType" Relationship="AuburnBYXDBModel.FK_Guardians_GuardianTypes" FromRole="Guardian" ToRole="GuardianType" />
+          <NavigationProperty Name="Member" Relationship="AuburnBYXDBModel.FK_Guardians_Members" FromRole="Guardian" ToRole="Member" />
+          <NavigationProperty Name="NonMember" Relationship="AuburnBYXDBModel.FK_Guardians_NonMembers" FromRole="Guardian" ToRole="NonMember" />
+        </EntityType>
+        <EntityType Name="GuardianType">
+          <Key>
+            <PropertyRef Name="GuardianType_ID" />
+          </Key>
+          <Property Name="GuardianType_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GuardianType_Label" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Guardian" Relationship="AuburnBYXDBModel.FK_Guardians_GuardianTypes" FromRole="GuardianType" ToRole="Guardian" />
+        </EntityType>
         <EntityType Name="Member">
           <Key>
             <PropertyRef Name="Member_ID" />
@@ -293,7 +463,9 @@
           <Property Name="Member_IgnitedNum" Type="Int64" />
           <NavigationProperty Name="Admins" Relationship="AuburnBYXDBModel.FK_Admins_Members" FromRole="Member" ToRole="Admin" />
           <NavigationProperty Name="AttendanceRecords" Relationship="AuburnBYXDBModel.FK_AttendanceRecords_Members" FromRole="Member" ToRole="AttendanceRecord" />
+          <NavigationProperty Name="Guardians" Relationship="AuburnBYXDBModel.FK_Guardians_Members" FromRole="Member" ToRole="Guardian" />
           <NavigationProperty Name="MemberType" Relationship="AuburnBYXDBModel.FK_Members_MemberTypes" FromRole="Member" ToRole="MemberType" />
+          <NavigationProperty Name="Potentials" Relationship="AuburnBYXDBModel.FK_Potentials_Members" FromRole="Member" ToRole="Potential" />
         </EntityType>
         <EntityType Name="MemberType">
           <Key>
@@ -302,6 +474,30 @@
           <Property Name="MemberType_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MemberType_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Members" Relationship="AuburnBYXDBModel.FK_Members_MemberTypes" FromRole="MemberType" ToRole="Member" />
+        </EntityType>
+        <EntityType Name="NonMember">
+          <Key>
+            <PropertyRef Name="NonMember_ID" />
+          </Key>
+          <Property Name="NonMember_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NonMember_FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NonMember_LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NonMember_EmailAddress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Guardians" Relationship="AuburnBYXDBModel.FK_Guardians_NonMembers" FromRole="NonMember" ToRole="Guardian" />
+          <NavigationProperty Name="Potentials" Relationship="AuburnBYXDBModel.FK_Potentials_NonMembers" FromRole="NonMember" ToRole="Potential" />
+        </EntityType>
+        <EntityType Name="Potential">
+          <Key>
+            <PropertyRef Name="Potential_ID" />
+          </Key>
+          <Property Name="Potential_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NonMember_ID" Type="Int32" Nullable="false" />
+          <Property Name="SemesterSignedUp" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ReferredBy" Type="Int32" />
+          <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Member" Relationship="AuburnBYXDBModel.FK_Potentials_Members" FromRole="Potential" ToRole="Member" />
+          <NavigationProperty Name="NonMember" Relationship="AuburnBYXDBModel.FK_Potentials_NonMembers" FromRole="Potential" ToRole="NonMember" />
         </EntityType>
         <Association Name="FK_Admins_AdminRoles">
           <End Type="AuburnBYXDBModel.AdminRole" Role="AdminRole" Multiplicity="1" />
@@ -363,6 +559,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Guardians_GuardianTypes">
+          <End Type="AuburnBYXDBModel.GuardianType" Role="GuardianType" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.Guardian" Role="Guardian" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="GuardianType">
+              <PropertyRef Name="GuardianType_ID" />
+            </Principal>
+            <Dependent Role="Guardian">
+              <PropertyRef Name="Guardian_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Guardians_Members">
+          <End Type="AuburnBYXDBModel.Member" Role="Member" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.Guardian" Role="Guardian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Member_ID" />
+            </Principal>
+            <Dependent Role="Guardian">
+              <PropertyRef Name="GuardianOf" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Guardians_NonMembers">
+          <End Type="AuburnBYXDBModel.NonMember" Role="NonMember" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.Guardian" Role="Guardian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NonMember">
+              <PropertyRef Name="NonMember_ID" />
+            </Principal>
+            <Dependent Role="Guardian">
+              <PropertyRef Name="NonMember_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Members_MemberTypes">
           <End Type="AuburnBYXDBModel.MemberType" Role="MemberType" Multiplicity="1" />
           <End Type="AuburnBYXDBModel.Member" Role="Member" Multiplicity="*" />
@@ -375,12 +607,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="sp_MemberAttendanceRecord_Result">
-          <Property Type="DateTime" Name="Event_StartDateTime" Nullable="false" Precision="23" />
-          <Property Type="String" Name="Event_Name" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="Attended" Nullable="true" MaxLength="8" />
-          <Property Type="Int32" Name="EventType_ID" Nullable="false" />
-        </ComplexType>
+        <Association Name="FK_Potentials_Members">
+          <End Type="AuburnBYXDBModel.Member" Role="Member" Multiplicity="0..1" />
+          <End Type="AuburnBYXDBModel.Potential" Role="Potential" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="Member_ID" />
+            </Principal>
+            <Dependent Role="Potential">
+              <PropertyRef Name="ReferredBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Potentials_NonMembers">
+          <End Type="AuburnBYXDBModel.NonMember" Role="NonMember" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.Potential" Role="Potential" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NonMember">
+              <PropertyRef Name="NonMember_ID" />
+            </Principal>
+            <Dependent Role="Potential">
+              <PropertyRef Name="NonMember_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -394,6 +644,16 @@
                 <ScalarProperty Name="Attended" ColumnName="Attended" />
                 <ScalarProperty Name="Member_ID" ColumnName="Member_ID" />
                 <ScalarProperty Name="SwipeTime" ColumnName="SwipeTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_MemberAttendanceRecord" FunctionName="AuburnBYXDBModel.Store.sp_MemberAttendanceRecord">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AuburnBYXDBModel.sp_MemberAttendanceRecord_Result">
+                <ScalarProperty Name="Event_StartDateTime" ColumnName="Event_StartDateTime" />
+                <ScalarProperty Name="Event_Name" ColumnName="Event_Name" />
+                <ScalarProperty Name="Attended" ColumnName="Attended" />
+                <ScalarProperty Name="EventType_ID" ColumnName="EventType_ID" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -444,6 +704,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Guardians">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.Guardian">
+              <MappingFragment StoreEntitySet="Guardians">
+                <ScalarProperty Name="GuardianType_ID" ColumnName="GuardianType_ID" />
+                <ScalarProperty Name="GuardianOf" ColumnName="GuardianOf" />
+                <ScalarProperty Name="NonMember_ID" ColumnName="NonMember_ID" />
+                <ScalarProperty Name="Guardian_ID" ColumnName="Guardian_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GuardianTypes">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.GuardianType">
+              <MappingFragment StoreEntitySet="GuardianTypes">
+                <ScalarProperty Name="GuardianType_Label" ColumnName="GuardianType_Label" />
+                <ScalarProperty Name="GuardianType_ID" ColumnName="GuardianType_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Members">
             <EntityTypeMapping TypeName="AuburnBYXDBModel.Member">
               <MappingFragment StoreEntitySet="Members">
@@ -466,16 +744,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_MemberAttendanceRecord" FunctionName="AuburnBYXDBModel.Store.sp_MemberAttendanceRecord">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AuburnBYXDBModel.sp_MemberAttendanceRecord_Result">
-                <ScalarProperty Name="Event_StartDateTime" ColumnName="Event_StartDateTime" />
-                <ScalarProperty Name="Event_Name" ColumnName="Event_Name" />
-                <ScalarProperty Name="Attended" ColumnName="Attended" />
-                <ScalarProperty Name="EventType_ID" ColumnName="EventType_ID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <EntitySetMapping Name="NonMembers">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.NonMember">
+              <MappingFragment StoreEntitySet="NonMembers">
+                <ScalarProperty Name="Archived" ColumnName="Archived" />
+                <ScalarProperty Name="NonMember_EmailAddress" ColumnName="NonMember_EmailAddress" />
+                <ScalarProperty Name="NonMember_LastName" ColumnName="NonMember_LastName" />
+                <ScalarProperty Name="NonMember_FirstName" ColumnName="NonMember_FirstName" />
+                <ScalarProperty Name="NonMember_ID" ColumnName="NonMember_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Potentials">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.Potential">
+              <MappingFragment StoreEntitySet="Potentials">
+                <ScalarProperty Name="Archived" ColumnName="Archived" />
+                <ScalarProperty Name="ReferredBy" ColumnName="ReferredBy" />
+                <ScalarProperty Name="SemesterSignedUp" ColumnName="SemesterSignedUp" />
+                <ScalarProperty Name="NonMember_ID" ColumnName="NonMember_ID" />
+                <ScalarProperty Name="Potential_ID" ColumnName="Potential_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

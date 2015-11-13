@@ -1,0 +1,90 @@
+﻿@model BYX.Models.NonMember
+
+@{
+    ViewBag.Title = "Register";
+}
+<div class="container" style="text-align:center;" data-bind="visible: !loading() && !type()">
+    <h1 id="header-prompt">Are you a parent/guardian or potential?</h1>
+    <div class="row">
+        <div class="col-xs-6" style="text-align:right;">
+            <button class="btn btn-primary btn-lg" data-bind="click: function() {setType('Parent')}">Parent/Guardian</button>
+        </div>
+        <div class="col-xs-6" style="text-align:left;">
+            <button class="btn btn-primary btn-lg" data-bind="click: function(){setType('Potential')}">Potential</button>
+        </div>
+    </div>
+</div>
+<div data-bind="visible: type()">
+    <a href="#" data-bind="click: function(){setType(undefined)}">< Back</a>
+    @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { id = "Register-Form" }))
+    {
+        <input type="hidden" name="Type" id="Type" data-bind="value: type" />
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Welcome </h3>
+                <!-- ko if: type() == 'Parent'-->
+                <p data-bind="text: parentText"></p>
+                <!-- /ko -->
+                <!-- ko if: type() == 'Potential'-->
+                <p data-bind="text: potentialText"></p>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                @Html.LabelFor(f => f.FullName)
+                <input type="text" class="form-control" name="FullName" id="FullName" placeholder="First and Last" data-bind="value: fullName"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="EmailAddress">Email Address</label>
+                <input type="text" class="form-control" name="EmailAddress" id="EmailAddress" placeholder="someone@byxrules.com" data-bind="value: emailAddress" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="Member_ID">
+                    <!-- ko if: type() == 'Parent'-->
+                    <span data-bind="text: 'Who are you here for?'"></span>
+                    <!-- /ko -->
+                    <!-- ko if: type() == 'Potential'-->
+                    <span data-bind="text: 'Who told you about BYX?'"></span>
+                    <!-- /ko -->
+                </label>
+                <select id="Member_ID" data-bind="value: memberID, foreach: memberList" class="form-control">
+                    <option data-bind="value: Member_ID, text: Member_Name"></option>
+                </select>
+            </div>
+        </div>
+        <!-- ko if: type() == 'Parent'-->
+        <div class="row">
+            <div class="col-md-6">
+                <label for="GuardianType_ID">
+                    What is your relation to <span data-bind="text: memberFirstName"></span>?
+                </label>
+                <select id="GuardianType_ID" data-bind="value: guardianTypeID, foreach: guardianTypeList" class="form-control">
+                    <option data-bind="value: GuardianType_ID, text: GuardianType_Label"></option>
+                </select>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="row">
+            <div class="col-md-6" style="text-align:center;">
+                <button class="btn btn-primary btn-lg" id="btn-submit" data-bind="click: function(){submit();}">Submit</button> 
+            </div>
+        </div>
+    }
+</div>
+@section head {
+    <link href="~/Content/css/Register.css" rel="stylesheet" />
+    <script src="~/Content/js/knockout.js"></script>
+    <script src="~/Content/js/ViewModels/RegisterViewModel.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            window.viewModel = new RegisterViewModel();
+            ko.applyBindings(viewModel);
+        });
+    </script>
+}
+

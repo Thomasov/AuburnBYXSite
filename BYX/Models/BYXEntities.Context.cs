@@ -32,8 +32,12 @@ namespace BYX.Models
         public virtual DbSet<AttendanceRecord> AttendanceRecords { get; set; }
         public virtual DbSet<BYXEvent> BYXEvents { get; set; }
         public virtual DbSet<EventType> EventTypes { get; set; }
+        public virtual DbSet<Guardian> Guardians { get; set; }
+        public virtual DbSet<GuardianType> GuardianTypes { get; set; }
         public virtual DbSet<Member> Members { get; set; }
         public virtual DbSet<MemberType> MemberTypes { get; set; }
+        public virtual DbSet<NonMember> NonMembers { get; set; }
+        public virtual DbSet<Potential> Potentials { get; set; }
     
         public virtual ObjectResult<sp_EventAttendanceRecord_Result> sp_EventAttendanceRecord(Nullable<int> p_EventID)
         {

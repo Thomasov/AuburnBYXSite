@@ -5,7 +5,10 @@ html, body {
     height: 100%;
 }
 
-h1, h2, h3, h4 {
+h4 {
+    color: #4F2E7F;
+}
+h1, h2, h3 {
     color: #4F2E7F;
     font-variant: small-caps;
 }
@@ -22,7 +25,10 @@ a {
     background-color: #4F2E7F;
     border-color: #371F5A;
 }
-
+.btn-primary:hover {
+    background-color: #391A68;
+    border-color: #371F5A;
+}
 .nav-pills > li + li {
     margin-left: 0;
 }
@@ -31,10 +37,10 @@ a {
     text-align: center;
 }
 
-.nav > li > a:focus, .nav > li > a:hover {
+/*.nav > li > a:focus, .nav > li > a:hover {
     text-decoration: none;
     background-color: rgba(79, 46, 127, 0.24);
-}
+}*/
 
 .nav-row {
     border-bottom: 1px solid rgba(140, 115, 178, .2);

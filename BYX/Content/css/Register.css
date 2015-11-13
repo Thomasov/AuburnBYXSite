@@ -1,0 +1,13 @@
+﻿.btn-lg {
+    width: 100%;
+}
+#btn-submit {
+    width: 50%;
+}
+@media (min-width:641px) {
+}
+@media (min-width:961px) {
+    .btn-lg {
+        width: 50%;
+    }
+}

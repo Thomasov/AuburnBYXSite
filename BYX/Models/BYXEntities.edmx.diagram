@@ -5,19 +5,28 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="170b63a3c76049bca14105ac292d9008" Name="Diagram1">
-        <EntityTypeShape EntityType="AuburnBYXDBModel.AdminRole" Width="1.5" PointX="3" PointY="12" />
-        <EntityTypeShape EntityType="AuburnBYXDBModel.Admin" Width="1.5" PointX="5.25" PointY="3.875" />
-        <EntityTypeShape EntityType="AuburnBYXDBModel.AttendanceRecord" Width="1.5" PointX="5.25" PointY="0.75" />
-        <EntityTypeShape EntityType="AuburnBYXDBModel.BYXEvent" Width="1.5" PointX="3" PointY="8" />
-        <EntityTypeShape EntityType="AuburnBYXDBModel.EventType" Width="1.5" PointX="0.75" PointY="8.25" />
-        <EntityTypeShape EntityType="AuburnBYXDBModel.Member" Width="1.5" PointX="3" PointY="3.25" />
-        <EntityTypeShape EntityType="AuburnBYXDBModel.MemberType" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.AdminRole" Width="1.5" PointX="3" PointY="2.125" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.Admin" Width="1.5" PointX="7.5" PointY="3.375" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.AttendanceRecord" Width="1.5" PointX="6.875" PointY="9.125" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.BYXEvent" Width="1.5" PointX="7.375" PointY="13.75" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.EventType" Width="1.5" PointX="10.75" PointY="14" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.Guardian" Width="1.5" PointX="5.125" PointY="4.25" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.GuardianType" Width="1.5" PointX="3" PointY="12.75" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.Member" Width="1.5" PointX="3" PointY="5.25" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.MemberType" Width="1.5" PointX="0.75" PointY="6.125" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.NonMember" Width="1.5" PointX="2.125" PointY="9.5" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.Potential" Width="1.5" PointX="8.25" PointY="5.75" />
         <AssociationConnector Association="AuburnBYXDBModel.FK_Admins_AdminRoles" />
         <AssociationConnector Association="AuburnBYXDBModel.FK_Admins_Members" />
         <AssociationConnector Association="AuburnBYXDBModel.FK_AttendanceRecords_BYXEvents" />
         <AssociationConnector Association="AuburnBYXDBModel.FK_AttendanceRecords_Members" />
         <AssociationConnector Association="AuburnBYXDBModel.FK_BYXEvents_EventTypes" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_Guardians_GuardianTypes" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_Guardians_Members" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_Guardians_NonMembers" />
         <AssociationConnector Association="AuburnBYXDBModel.FK_Members_MemberTypes" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_Potentials_Members" />
+        <AssociationConnector Association="AuburnBYXDBModel.FK_Potentials_NonMembers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
