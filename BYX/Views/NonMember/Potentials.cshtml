@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BYX.Models.Potential>
+
+@{
+    ViewBag.Title = "Potentials";
+}
+
+<h2>Potentials</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SemesterSignedUp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Archived)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member.Member_FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NonMember.NonMember_FirstName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SemesterSignedUp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Archived)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Member.Member_FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NonMember.NonMember_FirstName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.NonMember_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.NonMember_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.NonMember_ID })
+        </td>
+    </tr>
+}
+
+</table>

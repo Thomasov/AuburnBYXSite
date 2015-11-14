@@ -14,7 +14,6 @@ namespace BYX.Models
     
     public partial class Potential
     {
-        public int Potential_ID { get; set; }
         public int NonMember_ID { get; set; }
         public string SemesterSignedUp { get; set; }
         public Nullable<int> ReferredBy { get; set; }

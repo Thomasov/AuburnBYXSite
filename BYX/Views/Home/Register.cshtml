@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Register";
 }
+<div class="spinner-loader" data-bind="visible: posting()">
+    Loading…
+</div>
 <div class="container" style="text-align:center;" data-bind="visible: !loading() && !type()">
     <h1 id="header-prompt">Are you a parent/guardian or potential?</h1>
     <div class="row">
@@ -33,7 +36,7 @@
         <div class="row">
             <div class="col-md-6">
                 @Html.LabelFor(f => f.FullName)
-                <input type="text" class="form-control" name="FullName" id="FullName" placeholder="First and Last" data-bind="value: fullName"/>
+                <input type="text" class="form-control" name="FullName" id="FullName" placeholder="First and Last" data-bind="value: fullName" />
             </div>
         </div>
         <div class="row">
@@ -45,15 +48,15 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="Member_ID">
-                    <!-- ko if: type() == 'Parent'-->
-                    <span data-bind="text: 'Who are you here for?'"></span>
-                    <!-- /ko -->
-                    <!-- ko if: type() == 'Potential'-->
-                    <span data-bind="text: 'Who told you about BYX?'"></span>
-                    <!-- /ko -->
+                    <span data-bind="text: type() == 'Parent' ? 'Who are you here for?' : 'Who told you about BYX?'"></span>
                 </label>
-                <select id="Member_ID" data-bind="value: memberID, foreach: memberList" class="form-control">
+                <select id="Member_ID" data-bind="value: memberID" class="form-control">
+                    <!-- ko if: type() == "Potential" -->
+                    <option value=0 selected="selected">No one</option>
+                    <!-- /ko -->
+                    <!-- ko foreach: memberList-->
                     <option data-bind="value: Member_ID, text: Member_Name"></option>
+                    <!-- /ko-->
                 </select>
             </div>
         </div>
@@ -71,7 +74,7 @@
         <!-- /ko -->
         <div class="row">
             <div class="col-md-6" style="text-align:center;">
-                <button class="btn btn-primary btn-lg" id="btn-submit" data-bind="click: function(){submit();}">Submit</button> 
+                <button class="btn btn-primary btn-lg" id="btn-submit" data-bind="click: function(){submit();}, disable: posting()">Submit</button>
             </div>
         </div>
     }
@@ -80,9 +83,15 @@
     <link href="~/Content/css/Register.css" rel="stylesheet" />
     <script src="~/Content/js/knockout.js"></script>
     <script src="~/Content/js/ViewModels/RegisterViewModel.js"></script>
+    <link rel="stylesheet" href="http://css-spinners.com/css/spinner/spinner.css" type="text/css">
+
+<link href="~/Content/css/alertify.core.css" rel="stylesheet" />
+<link href="~/Content/css/alertify.bootstrap.css" rel="stylesheet" />
+<script src="~/Content/js/alertify.js"></script>
+
     <script type="text/javascript">
         $(function () {
-            window.viewModel = new RegisterViewModel();
+            var viewModel = new RegisterViewModel();
             ko.applyBindings(viewModel);
         });
     </script>

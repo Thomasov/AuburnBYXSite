@@ -4,6 +4,12 @@
 #btn-submit {
     width: 50%;
 }
+.spinner-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 16px !important;
+}
 @media (min-width:641px) {
 }
 @media (min-width:961px) {

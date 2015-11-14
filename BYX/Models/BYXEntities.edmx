@@ -50,12 +50,12 @@
         </EntityType>
         <EntityType Name="Guardians">
           <Key>
-            <PropertyRef Name="Guardian_ID" />
+            <PropertyRef Name="NonMember_ID" />
           </Key>
-          <Property Name="Guardian_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NonMember_ID" Type="int" Nullable="false" />
           <Property Name="GuardianOf" Type="int" Nullable="false" />
           <Property Name="GuardianType_ID" Type="int" Nullable="false" />
+          <Property Name="Archived" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="GuardianTypes">
           <Key>
@@ -96,9 +96,8 @@
         </EntityType>
         <EntityType Name="Potentials">
           <Key>
-            <PropertyRef Name="Potential_ID" />
+            <PropertyRef Name="NonMember_ID" />
           </Key>
-          <Property Name="Potential_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NonMember_ID" Type="int" Nullable="false" />
           <Property Name="SemesterSignedUp" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="ReferredBy" Type="int" />
@@ -166,13 +165,13 @@
         </Association>
         <Association Name="FK_Guardians_GuardianTypes">
           <End Role="GuardianTypes" Type="Self.GuardianTypes" Multiplicity="1" />
-          <End Role="Guardians" Type="Self.Guardians" Multiplicity="0..1" />
+          <End Role="Guardians" Type="Self.Guardians" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GuardianTypes">
               <PropertyRef Name="GuardianType_ID" />
             </Principal>
             <Dependent Role="Guardians">
-              <PropertyRef Name="Guardian_ID" />
+              <PropertyRef Name="GuardianType_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -190,7 +189,7 @@
         </Association>
         <Association Name="FK_Guardians_NonMembers">
           <End Role="NonMembers" Type="Self.NonMembers" Multiplicity="1" />
-          <End Role="Guardians" Type="Self.Guardians" Multiplicity="*" />
+          <End Role="Guardians" Type="Self.Guardians" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="NonMembers">
               <PropertyRef Name="NonMember_ID" />
@@ -226,7 +225,7 @@
         </Association>
         <Association Name="FK_Potentials_NonMembers">
           <End Role="NonMembers" Type="Self.NonMembers" Multiplicity="1" />
-          <End Role="Potentials" Type="Self.Potentials" Multiplicity="*" />
+          <End Role="Potentials" Type="Self.Potentials" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="NonMembers">
               <PropertyRef Name="NonMember_ID" />
@@ -341,10 +340,6 @@
             <End Role="EventType" EntitySet="EventTypes" />
             <End Role="BYXEvent" EntitySet="BYXEvents" />
           </AssociationSet>
-          <AssociationSet Name="FK_Guardians_GuardianTypes" Association="AuburnBYXDBModel.FK_Guardians_GuardianTypes">
-            <End Role="GuardianType" EntitySet="GuardianTypes" />
-            <End Role="Guardian" EntitySet="Guardians" />
-          </AssociationSet>
           <AssociationSet Name="FK_Guardians_Members" Association="AuburnBYXDBModel.FK_Guardians_Members">
             <End Role="Member" EntitySet="Members" />
             <End Role="Guardian" EntitySet="Guardians" />
@@ -364,6 +359,10 @@
           <AssociationSet Name="FK_Potentials_NonMembers" Association="AuburnBYXDBModel.FK_Potentials_NonMembers">
             <End Role="NonMember" EntitySet="NonMembers" />
             <End Role="Potential" EntitySet="Potentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Guardians_GuardianTypes" Association="AuburnBYXDBModel.FK_Guardians_GuardianTypes">
+            <End Role="GuardianType" EntitySet="GuardianTypes" />
+            <End Role="Guardian" EntitySet="Guardians" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="sp_EventAttendanceRecord_Result">
@@ -431,15 +430,15 @@
         </EntityType>
         <EntityType Name="Guardian">
           <Key>
-            <PropertyRef Name="Guardian_ID" />
+            <PropertyRef Name="NonMember_ID" />
           </Key>
-          <Property Name="Guardian_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NonMember_ID" Type="Int32" Nullable="false" />
           <Property Name="GuardianOf" Type="Int32" Nullable="false" />
           <Property Name="GuardianType_ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="GuardianType" Relationship="AuburnBYXDBModel.FK_Guardians_GuardianTypes" FromRole="Guardian" ToRole="GuardianType" />
           <NavigationProperty Name="Member" Relationship="AuburnBYXDBModel.FK_Guardians_Members" FromRole="Guardian" ToRole="Member" />
           <NavigationProperty Name="NonMember" Relationship="AuburnBYXDBModel.FK_Guardians_NonMembers" FromRole="Guardian" ToRole="NonMember" />
+          <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="GuardianType" Relationship="AuburnBYXDBModel.FK_Guardians_GuardianTypes" FromRole="Guardian" ToRole="GuardianType" />
         </EntityType>
         <EntityType Name="GuardianType">
           <Key>
@@ -447,7 +446,7 @@
           </Key>
           <Property Name="GuardianType_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GuardianType_Label" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Guardian" Relationship="AuburnBYXDBModel.FK_Guardians_GuardianTypes" FromRole="GuardianType" ToRole="Guardian" />
+          <NavigationProperty Name="Guardians" Relationship="AuburnBYXDBModel.FK_Guardians_GuardianTypes" FromRole="GuardianType" ToRole="Guardian" />
         </EntityType>
         <EntityType Name="Member">
           <Key>
@@ -484,14 +483,13 @@
           <Property Name="NonMember_LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="NonMember_EmailAddress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Archived" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Guardians" Relationship="AuburnBYXDBModel.FK_Guardians_NonMembers" FromRole="NonMember" ToRole="Guardian" />
-          <NavigationProperty Name="Potentials" Relationship="AuburnBYXDBModel.FK_Potentials_NonMembers" FromRole="NonMember" ToRole="Potential" />
+          <NavigationProperty Name="Guardian" Relationship="AuburnBYXDBModel.FK_Guardians_NonMembers" FromRole="NonMember" ToRole="Guardian" />
+          <NavigationProperty Name="Potential" Relationship="AuburnBYXDBModel.FK_Potentials_NonMembers" FromRole="NonMember" ToRole="Potential" />
         </EntityType>
         <EntityType Name="Potential">
           <Key>
-            <PropertyRef Name="Potential_ID" />
+            <PropertyRef Name="NonMember_ID" />
           </Key>
-          <Property Name="Potential_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NonMember_ID" Type="Int32" Nullable="false" />
           <Property Name="SemesterSignedUp" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="ReferredBy" Type="Int32" />
@@ -559,18 +557,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Guardians_GuardianTypes">
-          <End Type="AuburnBYXDBModel.GuardianType" Role="GuardianType" Multiplicity="1" />
-          <End Type="AuburnBYXDBModel.Guardian" Role="Guardian" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="GuardianType">
-              <PropertyRef Name="GuardianType_ID" />
-            </Principal>
-            <Dependent Role="Guardian">
-              <PropertyRef Name="Guardian_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Guardians_Members">
           <End Type="AuburnBYXDBModel.Member" Role="Member" Multiplicity="1" />
           <End Type="AuburnBYXDBModel.Guardian" Role="Guardian" Multiplicity="*" />
@@ -585,7 +571,7 @@
         </Association>
         <Association Name="FK_Guardians_NonMembers">
           <End Type="AuburnBYXDBModel.NonMember" Role="NonMember" Multiplicity="1" />
-          <End Type="AuburnBYXDBModel.Guardian" Role="Guardian" Multiplicity="*" />
+          <End Type="AuburnBYXDBModel.Guardian" Role="Guardian" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="NonMember">
               <PropertyRef Name="NonMember_ID" />
@@ -621,13 +607,25 @@
         </Association>
         <Association Name="FK_Potentials_NonMembers">
           <End Type="AuburnBYXDBModel.NonMember" Role="NonMember" Multiplicity="1" />
-          <End Type="AuburnBYXDBModel.Potential" Role="Potential" Multiplicity="*" />
+          <End Type="AuburnBYXDBModel.Potential" Role="Potential" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="NonMember">
               <PropertyRef Name="NonMember_ID" />
             </Principal>
             <Dependent Role="Potential">
               <PropertyRef Name="NonMember_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Guardians_GuardianTypes">
+          <End Type="AuburnBYXDBModel.GuardianType" Role="GuardianType" Multiplicity="1" />
+          <End Type="AuburnBYXDBModel.Guardian" Role="Guardian" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GuardianType">
+              <PropertyRef Name="GuardianType_ID" />
+            </Principal>
+            <Dependent Role="Guardian">
+              <PropertyRef Name="GuardianType_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -707,10 +705,10 @@
           <EntitySetMapping Name="Guardians">
             <EntityTypeMapping TypeName="AuburnBYXDBModel.Guardian">
               <MappingFragment StoreEntitySet="Guardians">
+                <ScalarProperty Name="Archived" ColumnName="Archived" />
                 <ScalarProperty Name="GuardianType_ID" ColumnName="GuardianType_ID" />
                 <ScalarProperty Name="GuardianOf" ColumnName="GuardianOf" />
                 <ScalarProperty Name="NonMember_ID" ColumnName="NonMember_ID" />
-                <ScalarProperty Name="Guardian_ID" ColumnName="Guardian_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -762,7 +760,6 @@
                 <ScalarProperty Name="ReferredBy" ColumnName="ReferredBy" />
                 <ScalarProperty Name="SemesterSignedUp" ColumnName="SemesterSignedUp" />
                 <ScalarProperty Name="NonMember_ID" ColumnName="NonMember_ID" />
-                <ScalarProperty Name="Potential_ID" ColumnName="Potential_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

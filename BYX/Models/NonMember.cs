@@ -14,19 +14,13 @@ namespace BYX.Models
     
     public partial class NonMember
     {
-        public NonMember()
-        {
-            this.Guardians = new HashSet<Guardian>();
-            this.Potentials = new HashSet<Potential>();
-        }
-    
         public int NonMember_ID { get; set; }
         public string NonMember_FirstName { get; set; }
         public string NonMember_LastName { get; set; }
         public string NonMember_EmailAddress { get; set; }
         public bool Archived { get; set; }
     
-        public virtual ICollection<Guardian> Guardians { get; set; }
-        public virtual ICollection<Potential> Potentials { get; set; }
+        public virtual Guardian Guardian { get; set; }
+        public virtual Potential Potential { get; set; }
     }
 }

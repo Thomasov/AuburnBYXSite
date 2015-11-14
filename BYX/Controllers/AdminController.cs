@@ -19,11 +19,16 @@ namespace BYX.Controllers
             return View();
         }
 
+        /// <summary>
+        /// View a table of all of the admins and their roles.
+        /// </summary>
+        /// <returns></returns>
         [BYXAuthorize("Admin")]
         public ActionResult All()
         {
             return View(db.Admins);
         }
+
         #endregion
 
         #region Login/Logout

@@ -139,12 +139,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\alertify.bootstrap.css" />
+    <Content Include="Content\css\alertify.core.css" />
     <Content Include="Content\css\bootstrap-dialog.css" />
     <Content Include="Content\css\datatables.min.css" />
     <Content Include="Content\css\Details.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\Register.css" />
     <Content Include="Content\images\Crest.jpg" />
+    <Content Include="Content\js\alertify.js" />
     <Content Include="Content\js\bootstrap-dialog.js" />
     <Content Include="Content\js\datatables.js" />
     <Content Include="Content\js\knockout.js" />
@@ -198,6 +201,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JsonController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
+    <Compile Include="Controllers\NonMemberController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -290,6 +294,8 @@
     <Content Include="Views\Home\Resources.cshtml" />
     <Content Include="Views\Home\BlockSeating.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\NonMember\Potentials.cshtml" />
+    <Content Include="Views\NonMember\Guardians.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

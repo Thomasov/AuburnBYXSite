@@ -43,6 +43,38 @@ namespace BYX.Controllers
             return View(new NonMember());
         }
 
+        [HttpPost]
+        public ActionResult Register(NonMember nonmember, Guardian Parent = null, Potential Potential = null)
+        {
+            db.NonMembers.Add(nonmember);
+            if (Parent != null)
+            {
+                Parent.NonMember = nonmember;
+                db.Guardians.Add(Parent);
+            }
+            else if (Potential != null)
+            {
+                Potential.NonMember = nonmember;
+                Potential.ReferredBy = (Potential.ReferredBy == 0) ? null : Potential.ReferredBy;
+                Potential.SemesterSignedUp = "Fall 2015";
+                db.Potentials.Add(Potential);
+            }
+            try
+            {
+                db.SaveChanges();
+                return Json(new { 
+                    success = true
+                });
+            }
+            catch
+            {
+                return Json(new
+                {
+                    success = false
+                });
+            }
+        }
+
         public ActionResult Resources()
         {
             return View();

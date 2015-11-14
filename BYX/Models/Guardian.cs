@@ -14,13 +14,13 @@ namespace BYX.Models
     
     public partial class Guardian
     {
-        public int Guardian_ID { get; set; }
         public int NonMember_ID { get; set; }
         public int GuardianOf { get; set; }
         public int GuardianType_ID { get; set; }
+        public bool Archived { get; set; }
     
-        public virtual GuardianType GuardianType { get; set; }
         public virtual Member Member { get; set; }
         public virtual NonMember NonMember { get; set; }
+        public virtual GuardianType GuardianType { get; set; }
     }
 }

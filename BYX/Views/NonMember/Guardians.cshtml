@@ -1,0 +1,25 @@
+﻿@model IEnumerable<BYX.Models.Guardian>
+
+@{
+    ViewBag.Title = "Guardians";
+}
+
+<h2>Guardians</h2>
+<table class="table">
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Brother</th>
+        <th>Relationship</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.NonMember.NonMember_FirstName)</td>
+        <td>@Html.DisplayFor(modelItem => item.NonMember.NonMember_LastName)</td>
+        <td>@item.Member.Member_FirstName @item.Member.Member_LastName</td>
+        <td>@Html.DisplayFor(modelItem => item.GuardianType.GuardianType_Label)</td>
+    </tr>
+}
+
+</table>

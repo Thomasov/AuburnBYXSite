@@ -14,9 +14,14 @@ namespace BYX.Models
     
     public partial class GuardianType
     {
+        public GuardianType()
+        {
+            this.Guardians = new HashSet<Guardian>();
+        }
+    
         public int GuardianType_ID { get; set; }
         public string GuardianType_Label { get; set; }
     
-        public virtual Guardian Guardian { get; set; }
+        public virtual ICollection<Guardian> Guardians { get; set; }
     }
 }
