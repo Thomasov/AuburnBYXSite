@@ -40,6 +40,15 @@
           <Property Name="EventType_ID" Type="int" Nullable="false" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ConMan">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HTML" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastEditedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastEditedBy" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="EventTypes">
           <Key>
             <PropertyRef Name="EventType_ID" />
@@ -246,6 +255,7 @@
           <EntitySet Name="Admins" EntityType="Self.Admins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AttendanceRecords" EntityType="Self.AttendanceRecords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BYXEvents" EntityType="Self.BYXEvents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConMan" EntityType="Self.ConMan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventTypes" EntityType="Self.EventTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Guardians" EntityType="Self.Guardians" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GuardianTypes" EntityType="Self.GuardianTypes" Schema="dbo" store:Type="Tables" />
@@ -364,6 +374,7 @@
             <End Role="GuardianType" EntitySet="GuardianTypes" />
             <End Role="Guardian" EntitySet="Guardians" />
           </AssociationSet>
+          <EntitySet Name="ConMen" EntityType="AuburnBYXDBModel.ConMan" />
           </EntityContainer>
         <ComplexType Name="sp_EventAttendanceRecord_Result">
           <Property Type="String" Name="Name" Nullable="false" MaxLength="101" />
@@ -629,6 +640,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ConMan">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HTML" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastEditedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastEditedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -760,6 +780,16 @@
                 <ScalarProperty Name="ReferredBy" ColumnName="ReferredBy" />
                 <ScalarProperty Name="SemesterSignedUp" ColumnName="SemesterSignedUp" />
                 <ScalarProperty Name="NonMember_ID" ColumnName="NonMember_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConMen">
+            <EntityTypeMapping TypeName="AuburnBYXDBModel.ConMan">
+              <MappingFragment StoreEntitySet="ConMan">
+                <ScalarProperty Name="LastEditedBy" ColumnName="LastEditedBy" />
+                <ScalarProperty Name="LastEditedOn" ColumnName="LastEditedOn" />
+                <ScalarProperty Name="HTML" ColumnName="HTML" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

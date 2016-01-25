@@ -186,7 +186,9 @@
     <Content Include="Views\Event\Details.cshtml" />
     <Content Include="Views\Event\Edit.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -230,6 +232,9 @@
       <DependentUpon>BYXEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\BYXEvent.cs">
+      <DependentUpon>BYXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ConMan.cs">
       <DependentUpon>BYXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EventMetaData.cs" />

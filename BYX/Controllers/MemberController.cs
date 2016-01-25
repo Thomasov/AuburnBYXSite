@@ -20,7 +20,7 @@ namespace BYX.Controllers
         public ActionResult Index()
         {
             var members = db.Members.Include(m => m.MemberType);
-            return View(members.ToList());
+            return View(members.Where(f => f.MemberType.MemberType_Name == "Active Brother").ToList());
         }
 
         // GET: /Member/Details/5

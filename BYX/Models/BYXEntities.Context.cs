@@ -38,6 +38,7 @@ namespace BYX.Models
         public virtual DbSet<MemberType> MemberTypes { get; set; }
         public virtual DbSet<NonMember> NonMembers { get; set; }
         public virtual DbSet<Potential> Potentials { get; set; }
+        public virtual DbSet<ConMan> ConMen { get; set; }
     
         public virtual ObjectResult<sp_EventAttendanceRecord_Result> sp_EventAttendanceRecord(Nullable<int> p_EventID)
         {
