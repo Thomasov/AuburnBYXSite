@@ -271,6 +271,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\BYXAuth.cs" />
     <Compile Include="Utilities\BYXToolkit.cs" />
+    <Compile Include="Utilities\Content.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

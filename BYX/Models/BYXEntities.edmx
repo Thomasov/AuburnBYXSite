@@ -44,7 +44,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="HTML" Type="nvarchar(max)" Nullable="false" />
           <Property Name="LastEditedOn" Type="datetime" Nullable="false" />
           <Property Name="LastEditedBy" Type="varchar" MaxLength="50" Nullable="false" />
@@ -644,7 +644,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="HTML" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LastEditedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastEditedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />

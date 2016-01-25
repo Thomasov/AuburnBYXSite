@@ -27,7 +27,7 @@
         <AssociationConnector Association="AuburnBYXDBModel.FK_Potentials_Members" />
         <AssociationConnector Association="AuburnBYXDBModel.FK_Potentials_NonMembers" />
         <AssociationConnector Association="AuburnBYXDBModel.FK_Guardians_GuardianTypes" />
-        <EntityTypeShape EntityType="AuburnBYXDBModel.ConMan" Width="1.5" PointX="11.875" PointY="3.875" />
+        <EntityTypeShape EntityType="AuburnBYXDBModel.ConMan" Width="1.5" PointX="7.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -14,7 +14,7 @@ namespace BYX.Models
     
     public partial class ConMan
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string HTML { get; set; }
         public System.DateTime LastEditedOn { get; set; }
         public string LastEditedBy { get; set; }
