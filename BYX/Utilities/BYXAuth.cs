@@ -22,14 +22,7 @@ namespace BYX.Utilities
                     return false;
                 }
                 int memberID = GetMemberID();
-                if (db.Admins.Any(f => f.AdminRole.Role_Name == "Admin" && f.Member_ID == memberID))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return db.Admins.Any(f => f.AdminRole.Role_Name == "Admin" && f.Member_ID == memberID);
             }
         }
 
